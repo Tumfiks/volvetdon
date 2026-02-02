@@ -1702,5 +1702,70 @@ body {
         padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
 }
+/* Исправления для мобильных устройств */
+@media (max-width: 768px) {
+    .selection-title h2 {
+        font-size: 24px !important;
+        text-align: center;
+        padding: 0 15px;
+    }
+    
+    .selection-title p {
+        font-size: 16px !important;
+        text-align: center;
+        padding: 0 15px;
+    }
+    
+    .online-display {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+    }
+    
+    .online-display span {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #fff !important;
+    }
+    
+    .server-card h3 {
+        font-size: 22px !important;
+    }
+    
+    /* Убираем лишние отступы */
+    .server-selection {
+        padding: 80px 15px 40px !important;
+    }
+    
+    .server-card {
+        margin: 15px 0 !important;
+        padding: 20px 15px !important;
+    }
+    
+    /* Улучшаем прогресс бары */
+    .progress-bar {
+        height: 8px !important;
+        margin: 15px 0 !important;
+    }
+    
+    .progress-fill {
+        height: 8px !important;
+    }
+}
 
+/* Гарантия отображения онлайн статуса */
+.online-display span {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Убираем все возможные скрытия */
+#liteOnline, #critOnline {
+    display: inline !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
 .f
+
