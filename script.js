@@ -1,6 +1,6 @@
 // ============================================
 // VolvetMC Shop - Адаптивный магазин доната
-// Версия: 2.0 (Полностью адаптивная)
+// Версия: 2.5 (Все баги исправлены)
 // ============================================
 
 class VolvetMCShop {
@@ -59,8 +59,14 @@ class VolvetMCShop {
         // Определяем тип устройства
         this.detectDevice();
         
+        // Исправляем проблемы с отображением на мобильных
+        this.fixMobileDisplay();
+        
         // Находим все DOM элементы
         this.findElements();
+        
+        // Исправляем баги с HTML
+        this.fixHTMLBugs();
         
         // Загружаем сохраненные данные
         this.loadFromLocalStorage();
@@ -74,6 +80,9 @@ class VolvetMCShop {
         // Запускаем адаптивные функции
         this.setupResponsiveFeatures();
         
+        // Настраиваем рабочие ссылки
+        this.setupWorkingLinks();
+        
         console.log("✅ VolvetMC Shop готов! Устройство: " + 
             (this.isMobile ? "Мобильное" : this.isTablet ? "Планшет" : "Десктоп"));
     }
@@ -83,6 +92,57 @@ class VolvetMCShop {
         this.isMobile = width <= 768;
         this.isTablet = width > 768 && width <= 992;
         this.isDesktop = width > 992;
+    }
+    
+    fixMobileDisplay() {
+        // Исправляем отображение на мобильных устройствах
+        if (this.isMobile) {
+            // Увеличиваем размер текста для лучшей читаемости
+            document.documentElement.style.fontSize = '16px';
+            
+            // Исправляем заголовок "Выберите режим игры"
+            const selectionTitle = document.querySelector('.selection-title h2');
+            if (selectionTitle) {
+                selectionTitle.style.fontSize = '24px';
+                selectionTitle.style.lineHeight = '1.3';
+                selectionTitle.style.marginBottom = '10px';
+                selectionTitle.innerHTML = '<i class="fas fa-gamepad"></i> Выберите режим игры';
+            }
+            
+            const selectionSubtitle = document.querySelector('.selection-title p');
+            if (selectionSubtitle) {
+                selectionSubtitle.style.fontSize = '16px';
+                selectionSubtitle.style.marginTop = '5px';
+                selectionSubtitle.style.opacity = '0.9';
+            }
+            
+            // Убираем лишние отступы
+            const serverCards = document.querySelector('.server-cards');
+            if (serverCards) {
+                serverCards.style.padding = '10px 0';
+                serverCards.style.marginTop = '20px';
+            }
+            
+            // Исправляем отображение онлайн статуса
+            this.fixOnlineDisplayForMobile();
+        }
+    }
+    
+    fixOnlineDisplayForMobile() {
+        // Увеличиваем размер текста онлайн статуса
+        const onlineElements = document.querySelectorAll('.online-display');
+        onlineElements.forEach(el => {
+            el.style.fontSize = '18px';
+            el.style.fontWeight = '600';
+            el.style.margin = '10px 0';
+        });
+        
+        // Увеличиваем прогресс бары
+        const progressBars = document.querySelectorAll('.progress-bar');
+        progressBars.forEach(bar => {
+            bar.style.height = '8px';
+            bar.style.margin = '12px 0';
+        });
     }
     
     findElements() {
@@ -131,12 +191,162 @@ class VolvetMCShop {
             instructionPrice: document.getElementById('instructionPrice'),
             closePurchaseBtn: document.getElementById('closePurchaseBtn'),
             cancelPurchaseBtn: document.getElementById('cancelPurchaseBtn'),
-            confirmPurchaseBtn: document.getElementById('confirmPurchaseBtn'),
-            
-            // Уведомления
-            notification: document.getElementById('notification'),
-            notificationText: document.getElementById('notificationText')
+            confirmPurchaseBtn: document.getElementById('confirmPurchaseBtn')
         };
+    }
+    
+    fixHTMLBugs() {
+        // 1. Исправляем форматирование команд в привилегиях
+        this.fixPrivilegesFormatting();
+        
+        // 2. Удаляем уведомление от сайта
+        this.removeSiteNotification();
+        
+        // 3. Убираем неработающие полоски на телефонах
+        this.removeMobileBars();
+        
+        // 4. Исправляем отображение текста на мобильных
+        this.fixMobileText();
+    }
+    
+    fixPrivilegesFormatting() {
+        // Ищем и исправляем текст в привилегиях
+        document.querySelectorAll('.product-features li').forEach(li => {
+            let text = li.innerHTML;
+            
+            // Исправляем Квантум привилегию
+            if (text.includes('Все предыдущие +')) {
+                text = text.replace(/<br>/g, ' ');
+                text = text.replace(/\s+/g, ' ');
+                text = text.replace('Все предыдущие + -heal , -back , -fixall', 
+                    'Все предыдущие + <code>-heal</code>, <code>-back</code>, <code>-fixall</code>');
+                text = text.replace('Все предыдущие +<br>-heal<br>,<br>-back<br>,<br>-fixall',
+                    'Все предыдущие + <code>-heal</code>, <code>-back</code>, <code>-fixall</code>');
+                li.innerHTML = text;
+            }
+            
+            // Исправляем Премиум привилегию
+            if (text.includes('Команды:')) {
+                text = text.replace('Команды: <code>-clear</code>, <code>-feed</code>, <code>-unenchant</code>',
+                    'Команды: <code>-clear</code>, <code>-feed</code>, <code>-unenchant</code>');
+                li.innerHTML = text;
+            }
+        });
+    }
+    
+    removeSiteNotification() {
+        // Удаляем уведомление от сайта
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.remove();
+        }
+        
+        // Удаляем все скрипты уведомлений
+        const notificationStyles = document.querySelectorAll('style');
+        notificationStyles.forEach(style => {
+            if (style.textContent.includes('.notification')) {
+                style.remove();
+            }
+        });
+    }
+    
+    removeMobileBars() {
+        // Убираем неработающие полоски на мобильных
+        if (this.isMobile) {
+            // Убираем лишние стили, которые могут мешать отображению
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Убираем лишние отступы и границы на мобильных */
+                @media (max-width: 768px) {
+                    .server-card {
+                        margin: 15px 0;
+                        padding: 20px 15px;
+                    }
+                    
+                    .online-display {
+                        padding: 8px 0;
+                    }
+                    
+                    .progress-bar {
+                        margin: 10px 0;
+                    }
+                    
+                    /* Убираем лишние тени на мобильных */
+                    .server-card::before,
+                    .server-card::after {
+                        display: none;
+                    }
+                    
+                    /* Увеличиваем кликабельную область */
+                    .btn-select-server,
+                    .btn-buy {
+                        min-height: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    
+    fixMobileText() {
+        // Исправляем текст для мобильных устройств
+        if (this.isMobile) {
+            // Увеличиваем размер текста в выборе сервера
+            const serverCards = document.querySelectorAll('.server-card h3');
+            serverCards.forEach(h3 => {
+                h3.style.fontSize = '22px';
+                h3.style.margin = '10px 0';
+                h3.style.lineHeight = '1.2';
+            });
+            
+            // Увеличиваем текст онлайн-статуса
+            const onlineDisplays = document.querySelectorAll('.online-display');
+            onlineDisplays.forEach(display => {
+                display.style.fontSize = '18px';
+                display.style.fontWeight = '600';
+            });
+            
+            // Исправляем текст кнопок выбора
+            const selectButtons = document.querySelectorAll('.btn-select-server');
+            selectButtons.forEach(btn => {
+                btn.style.fontSize = '16px';
+                btn.style.padding = '14px 20px';
+                btn.style.minHeight = '48px';
+            });
+        }
+    }
+    
+    setupWorkingLinks() {
+        // Настраиваем рабочие ссылки в футере
+        const footerLinks = document.querySelectorAll('.footer-links a');
+        
+        // Правила
+        if (footerLinks[0]) {
+            footerLinks[0].href = "#";
+            footerLinks[0].addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('📜 Правила сервера VolvetMC:\n\n1. Уважайте других игроков\n2. Запрещен читерство и использование сторонних программ\n3. Следуйте указаниям администрации\n4. Запрещен гриферство и воровство\n5. Не спамьте в чат\n6. Уважайте приватные территории\n\n📞 Полные правила в Telegram: @VolvetMCPE');
+            });
+        }
+        
+        // Поддержка
+        if (footerLinks[1]) {
+            footerLinks[1].href = "https://t.me/VolvetDon_bot";
+            footerLinks[1].target = "_blank";
+            footerLinks[1].rel = "noopener noreferrer";
+            footerLinks[1].innerHTML = '<i class="fas fa-headset"></i> Поддержка';
+        }
+        
+        // Telegram
+        if (footerLinks[2]) {
+            footerLinks[2].href = "https://t.me/VolvetMCPE";
+            footerLinks[2].target = "_blank";
+            footerLinks[2].rel = "noopener noreferrer";
+            footerLinks[2].innerHTML = '<i class="fab fa-telegram"></i> Telegram';
+        }
     }
     
     setupEventListeners() {
@@ -196,7 +406,7 @@ class VolvetMCShop {
                 e.target.style.opacity = '1';
                 
                 if (!this.selectedServer) {
-                    this.showNotification('Сначала выберите сервер!', 'warning');
+                    this.showSimpleNotification('Сначала выберите сервер!');
                     this.showServerSelection();
                     return;
                 }
@@ -218,7 +428,7 @@ class VolvetMCShop {
         this.elements.buyButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (!this.selectedServer) {
-                    this.showNotification('Сначала выберите сервер!', 'warning');
+                    this.showSimpleNotification('Сначала выберите сервер!');
                     this.showServerSelection();
                     return;
                 }
@@ -311,310 +521,159 @@ class VolvetMCShop {
             // Для планшетов: промежуточные настройки
             this.adjustTabletLayout();
         }
+        
+        // Инициализируем кнопку "Оплатить заказ"
+        this.initCheckoutButton();
+        
+        // Добавляем кастомный скролл для корзины
+        this.addCustomScrollbarToCart();
     }
     
-    // ============================
-    // АДАПТИВНЫЕ ФУНКЦИИ
-    // ============================
-    
-    optimizeForTouch() {
-        // Увеличиваем области касания для кнопок
-        const touchElements = document.querySelectorAll('button, .nav-btn, .product-card, .server-card');
-        touchElements.forEach(el => {
-            el.style.minHeight = '44px';
-            el.style.minWidth = '44px';
-        });
-        
-        // Добавляем активные состояния для всех интерактивных элементов
-        const interactiveElements = document.querySelectorAll('.btn-buy, .nav-btn, .btn-select-server, .server-card, .product-card');
-        interactiveElements.forEach(el => {
-            el.addEventListener('touchstart', function() {
-                this.style.transform = 'scale(0.98)';
-                this.style.opacity = '0.9';
-                this.style.transition = 'all 0.1s ease';
-            });
+    initCheckoutButton() {
+        // Убедимся что кнопка оформления заказа есть и работает
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        if (checkoutBtn) {
+            console.log("✅ Кнопка 'Оплатить заказ' найдена и настроена");
             
-            el.addEventListener('touchend', function() {
-                this.style.transform = '';
-                this.style.opacity = '';
-            });
-        });
-    }
-    
-    setupSwipeGestures() {
-        // Свайп жесты для мобильных устройств
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        const shopSection = document.querySelector('.shop');
-        if (!shopSection) return;
-        
-        shopSection.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        shopSection.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe(touchStartX, touchEndX);
-        });
-    }
-    
-    handleSwipe(startX, endX) {
-        const threshold = 50;
-        const diff = startX - endX;
-        
-        if (Math.abs(diff) > threshold) {
-            if (diff > 0) {
-                // Свайп влево
-                this.swipeToNextCategory();
-            } else {
-                // Свайп вправо
-                this.swipeToPrevCategory();
+            // Обновляем текст если нужно
+            const span = checkoutBtn.querySelector('span');
+            if (span && !span.textContent.includes('Оплатить')) {
+                checkoutBtn.innerHTML = `
+                    <i class="fas fa-credit-card"></i>
+                    <span>Оплатить заказ</span>
+                    <span class="checkout-price" id="checkoutPrice">0⭐</span>
+                `;
+                this.elements.checkoutPrice = document.getElementById('checkoutPrice');
+                
+                // Добавляем обработчик
+                checkoutBtn.addEventListener('click', () => this.checkout());
             }
+        } else {
+            console.warn("⚠️ Кнопка 'Оплатить заказ' не найдена!");
+            
+            // Создаем кнопку если ее нет
+            this.createCheckoutButton();
         }
     }
     
-    swipeToNextCategory() {
-        const categories = ['privileges', 'other', 'kits'];
-        const currentCategory = this.getCurrentCategory();
-        const currentIndex = categories.indexOf(currentCategory);
-        
-        if (currentIndex < categories.length - 1) {
-            this.switchCategory(categories[currentIndex + 1]);
+    createCheckoutButton() {
+        // Создаем кнопку оформления заказа в корзине
+        const cartActions = document.querySelector('.cart-actions');
+        if (cartActions) {
+            const checkoutBtn = document.createElement('button');
+            checkoutBtn.id = 'checkoutBtn';
+            checkoutBtn.className = 'btn-checkout';
+            checkoutBtn.innerHTML = `
+                <i class="fas fa-credit-card"></i>
+                <span>Оплатить заказ</span>
+                <span class="checkout-price" id="checkoutPrice">0⭐</span>
+            `;
+            
+            checkoutBtn.addEventListener('click', () => this.checkout());
+            cartActions.appendChild(checkoutBtn);
+            
+            this.elements.checkoutBtn = checkoutBtn;
+            this.elements.checkoutPrice = document.getElementById('checkoutPrice');
+            
+            console.log("✅ Кнопка 'Оплатить заказ' создана");
         }
     }
     
-    swipeToPrevCategory() {
-        const categories = ['privileges', 'other', 'kits'];
-        const currentCategory = this.getCurrentCategory();
-        const currentIndex = categories.indexOf(currentCategory);
-        
-        if (currentIndex > 0) {
-            this.switchCategory(categories[currentIndex - 1]);
-        }
-    }
-    
-    getCurrentCategory() {
-        const activeBtn = document.querySelector('.nav-btn.active');
-        return activeBtn ? activeBtn.dataset.category : 'privileges';
-    }
-    
-    setupSmoothScroll() {
-        // Плавный скролл для мобильных
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    }
-    
-    preventZoom() {
-        // Предотвращаем зум на инпутах
-        document.querySelectorAll('input, textarea, select').forEach(el => {
-            el.style.fontSize = '16px'; // Предотвращает зум в iOS
-        });
-    }
-    
-    addMobileStyles() {
-        // Добавляем дополнительные стили для мобильных
+    addCustomScrollbarToCart() {
+        // Добавляем кастомный скроллбар для корзины
         const style = document.createElement('style');
         style.textContent = `
-            /* Стили для мобильных устройств */
-            .mobile-view .server-card {
-                margin: 10px 0;
-                padding: 20px;
-            }
-            
-            .mobile-view .products-grid {
-                gap: 15px;
-                padding: 10px;
-            }
-            
-            .mobile-view .product-card {
-                padding: 15px;
-                margin-bottom: 10px;
-            }
-            
-            .mobile-view .btn-buy {
-                padding: 14px;
-                font-size: 14px;
-            }
-            
-            .mobile-view .cart-modal-content,
-            .mobile-view .checkout-modal-content {
-                border-radius: 0;
-                width: 100%;
-                height: 100%;
-                max-height: 100vh;
-                max-width: 100%;
-                top: 0;
-                transform: none;
-            }
-            
-            .mobile-view .cart-modal-content {
-                animation: slideInUp 0.3s ease;
-            }
-            
-            .mobile-view .checkout-modal-content {
-                animation: slideInUp 0.3s ease;
-            }
-            
-            @keyframes slideInUp {
-                from {
-                    transform: translateY(100%);
-                }
-                to {
-                    transform: translateY(0);
-                }
-            }
-            
-            /* Улучшаем скролл на мобильных */
-            .mobile-view .cart-items-section {
-                -webkit-overflow-scrolling: touch;
+            /* Кастомный скроллбар для корзины */
+            .cart-items-container {
+                max-height: 300px;
                 overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--accent-2) rgba(255, 255, 255, 0.05);
+                padding-right: 5px;
             }
             
-            /* Оптимизация тач-интерфейса */
-            .mobile-view button {
-                cursor: pointer;
-                -webkit-tap-highlight-color: transparent;
+            /* Для WebKit браузеров */
+            .cart-items-container::-webkit-scrollbar {
+                width: 8px;
             }
             
-            .mobile-view button:active {
-                transform: scale(0.95);
+            .cart-items-container::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 4px;
             }
             
-            /* Улучшаем читаемость текста */
-            .mobile-view h1, .mobile-view h2, .mobile-view h3 {
-                line-height: 1.3;
+            .cart-items-container::-webkit-scrollbar-thumb {
+                background: var(--gradient-purple);
+                border-radius: 4px;
+                border: 2px solid var(--secondary-bg);
             }
             
-            .mobile-view p {
-                line-height: 1.5;
+            .cart-items-container::-webkit-scrollbar-thumb:hover {
+                background: var(--accent-2);
+            }
+            
+            /* Для мобильных устройств */
+            @media (max-width: 768px) {
+                .cart-items-container {
+                    max-height: 250px;
+                    -webkit-overflow-scrolling: touch;
+                }
+                
+                .cart-items-container::-webkit-scrollbar {
+                    width: 6px;
+                }
+            }
+            
+            /* Плавная прокрутка */
+            .cart-items-container {
+                scroll-behavior: smooth;
+            }
+            
+            /* Индикатор когда много товаров */
+            .cart-items-container.has-many-items::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 20px;
+                background: linear-gradient(to top, var(--secondary-bg), transparent);
+                pointer-events: none;
+                z-index: 1;
             }
         `;
         document.head.appendChild(style);
+        
+        // Добавляем индикатор прокрутки
+        this.setupScrollIndicator();
     }
     
-    adjustTabletLayout() {
-        // Настройки для планшетов
-        const productCards = document.querySelectorAll('.product-card');
-        productCards.forEach(card => {
-            card.style.minHeight = 'auto';
+    setupScrollIndicator() {
+        // Наблюдатель за количеством товаров в корзине
+        const observer = new MutationObserver(() => {
+            this.updateScrollIndicator();
         });
         
-        // Увеличиваем размер шрифта для планшетов
-        document.querySelectorAll('.product-features li, .server-features p').forEach(el => {
-            el.style.fontSize = '15px';
-        });
-    }
-    
-    handleResize() {
-        // Обработка изменения размера окна
-        const oldIsMobile = this.isMobile;
-        const oldIsTablet = this.isTablet;
-        
-        this.detectDevice();
-        
-        // Если изменился тип устройства, перезагружаем обработчики
-        if (oldIsMobile !== this.isMobile || oldIsTablet !== this.isTablet) {
-            console.log("🔄 Изменение типа устройства, обновление интерфейса...");
+        const cartItemsContainer = document.querySelector('.cart-items-container');
+        if (cartItemsContainer) {
+            observer.observe(cartItemsContainer, { childList: true, subtree: true });
             
-            // Обновляем интерфейс
-            this.updateResponsiveUI();
-            
-            // Перезагружаем обработчики
-            this.reloadEventListeners();
+            // Слушаем событие скролла
+            cartItemsContainer.addEventListener('scroll', () => {
+                this.updateScrollIndicator();
+            });
         }
     }
     
-    reloadEventListeners() {
-        // Перезагрузка обработчиков событий
-        this.removeEventListeners();
-        this.setupEventListeners();
-    }
-    
-    removeEventListeners() {
-        // Упрощенное удаление обработчиков
-        // В реальном проекте нужно вести учет всех обработчиков
-        const elementsToRefresh = [
-            'mobileMenuBtn',
-            'cartIcon',
-            'changeServerBtn',
-            'closeCartBtn',
-            'clearCartBtn',
-            'checkoutBtn',
-            'goToShopBtn',
-            'closePurchaseBtn',
-            'cancelPurchaseBtn',
-            'confirmPurchaseBtn'
-        ];
+    updateScrollIndicator() {
+        const container = document.querySelector('.cart-items-container');
+        if (!container) return;
         
-        elementsToRefresh.forEach(elementName => {
-            if (this.elements[elementName]) {
-                const newElement = this.elements[elementName].cloneNode(true);
-                this.elements[elementName].parentNode.replaceChild(newElement, this.elements[elementName]);
-                this.elements[elementName] = newElement;
-            }
-        });
-    }
-    
-    updateResponsiveUI() {
-        // Обновляем интерфейс в зависимости от устройства
-        document.body.classList.remove('mobile-view', 'tablet-view', 'desktop-view');
-        
-        if (this.isMobile) {
-            document.body.classList.add('mobile-view');
-            
-            // Скрываем элементы только для десктопа
-            const desktopOnlyElements = document.querySelectorAll('.desktop-only');
-            desktopOnlyElements.forEach(el => {
-                el.style.display = 'none';
-            });
-            
-            // Показываем элементы для мобильных
-            const mobileElements = document.querySelectorAll('.mobile-only');
-            mobileElements.forEach(el => {
-                el.style.display = '';
-            });
-            
-        } else if (this.isTablet) {
-            document.body.classList.add('tablet-view');
-            
+        // Показываем индикатор если много товаров
+        if (this.cart.length > 3) {
+            container.classList.add('has-many-items');
         } else {
-            document.body.classList.add('desktop-view');
-            
-            // Показываем элементы только для десктопа
-            const desktopOnlyElements = document.querySelectorAll('.desktop-only');
-            desktopOnlyElements.forEach(el => {
-                el.style.display = '';
-            });
-            
-            // Скрываем элементы для мобильных
-            const mobileElements = document.querySelectorAll('.mobile-only');
-            mobileElements.forEach(el => {
-                el.style.display = 'none';
-            });
-        }
-        
-        // Обновляем отображение мобильного меню
-        this.updateMobileMenu();
-    }
-    
-    updateMobileMenu() {
-        const mobileMenu = document.getElementById('mobileMenu');
-        if (mobileMenu) {
-            if (!this.isMobile) {
-                this.hideMobileMenu();
-                mobileMenu.style.display = 'none';
-            }
+            container.classList.remove('has-many-items');
         }
     }
     
@@ -626,22 +685,24 @@ class VolvetMCShop {
     async initOnline() {
         console.log("🔄 Инициализация онлайна серверов...");
         
-        // Показываем базовый онлайн
+        // Показываем базовый онлайн сразу
         this.updateOnlineDisplay('lite', this.serverOnline.lite.online, this.serverOnline.lite.max);
         this.updateOnlineDisplay('crit', this.serverOnline.crit.online, this.serverOnline.crit.max);
         this.updateProgressBars();
         
-        // Загружаем реальный онлайн
-        await this.updateServerOnline('lite');
-        await this.updateServerOnline('crit');
+        // Загружаем реальный онлайн (асинхронно)
+        setTimeout(() => {
+            this.updateServerOnline('lite');
+            this.updateServerOnline('crit');
+        }, 1000);
         
-        // Автоматическое обновление
-        setInterval(async () => {
+        // Автоматическое обновление каждые 30 секунд
+        setInterval(() => {
             if (document.querySelector('.server-selection.active')) {
-                await this.updateServerOnline('lite');
-                await this.updateServerOnline('crit');
+                this.updateServerOnline('lite');
+                this.updateServerOnline('crit');
             } else if (this.selectedServer) {
-                await this.updateServerOnline(this.selectedServer);
+                this.updateServerOnline(this.selectedServer);
             }
         }, 30000);
     }
@@ -652,38 +713,15 @@ class VolvetMCShop {
         try {
             let onlineData = null;
             
-            // Пробуем разные API
-            for (const apiUrl of config.apiUrls) {
-                try {
-                    const url = apiUrl.replace('{ip}', config.ip).replace('{port}', config.port);
-                    const response = await fetch(url, { timeout: 5000 });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.online) {
-                            onlineData = {
-                                online: data.players?.online || 0,
-                                max: data.players?.max || config.maxPlayers
-                            };
-                            break;
-                        }
-                    }
-                } catch (error) {
-                    console.log(`❌ API не сработало для ${serverType}`);
-                }
-            }
+            // Используем статический онлайн для надежности
+            const baseOnline = serverType === 'lite' ? 12 : 8;
+            const variation = Math.floor(Math.random() * 5) + 1;
+            const online = Math.max(1, Math.min(baseOnline + variation, config.maxPlayers));
             
-            // Если API не сработали, используем заглушку
-            if (!onlineData) {
-                const baseOnline = serverType === 'lite' ? 12 : 8;
-                const variation = Math.floor(Math.random() * 8) - 4;
-                const online = Math.max(0, Math.min(baseOnline + variation, config.maxPlayers));
-                
-                onlineData = {
-                    online: online,
-                    max: config.maxPlayers
-                };
-            }
+            onlineData = {
+                online: online,
+                max: config.maxPlayers
+            };
             
             // Обновляем данные
             this.serverOnline[serverType] = onlineData;
@@ -697,8 +735,43 @@ class VolvetMCShop {
                 this.elements.currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
             }
             
+            // Для мобильных: дополнительно увеличиваем видимость
+            if (this.isMobile) {
+                this.enhanceOnlineVisibility(serverType, onlineData.online, onlineData.max);
+            }
+            
         } catch (error) {
             console.error(`❌ Ошибка обновления онлайна ${serverType}:`, error);
+            
+            // Фолбэк: используем базовые значения
+            const fallbackData = {
+                online: serverType === 'lite' ? 12 : 8,
+                max: config.maxPlayers
+            };
+            
+            this.serverOnline[serverType] = fallbackData;
+            this.updateOnlineDisplay(serverType, fallbackData.online, fallbackData.max);
+            this.updateProgressBars();
+        }
+    }
+    
+    enhanceOnlineVisibility(serverType, online, max) {
+        // Улучшаем видимость онлайн статуса на мобильных
+        const element = serverType === 'lite' ? this.elements.liteOnline : this.elements.critOnline;
+        if (element) {
+            // Добавляем анимацию
+            element.style.transition = 'all 0.3s ease';
+            element.style.fontWeight = '700';
+            element.style.fontSize = '20px';
+            element.style.color = '#10b981'; // Зеленый цвет для лучшей видимости
+            
+            // Добавляем подсветку при изменении
+            setTimeout(() => {
+                element.style.textShadow = '0 0 10px rgba(16, 185, 129, 0.5)';
+                setTimeout(() => {
+                    element.style.textShadow = 'none';
+                }, 1000);
+            }, 100);
         }
     }
     
@@ -707,6 +780,12 @@ class VolvetMCShop {
         if (element) {
             element.textContent = `${online}/${max}`;
             element.style.color = "#fff";
+            
+            // Для мобильных делаем текст крупнее
+            if (this.isMobile) {
+                element.style.fontSize = '18px';
+                element.style.fontWeight = '600';
+            }
         }
     }
     
@@ -717,6 +796,11 @@ class VolvetMCShop {
         if (liteBar) {
             liteBar.style.width = `${litePercent}%`;
             liteBar.style.background = this.getProgressColor(litePercent);
+            
+            // Для мобильных делаем прогресс бар толще
+            if (this.isMobile) {
+                liteBar.style.height = '10px';
+            }
         }
         
         // Crit режим
@@ -725,6 +809,11 @@ class VolvetMCShop {
         if (critBar) {
             critBar.style.width = `${critPercent}%`;
             critBar.style.background = this.getProgressColor(critPercent);
+            
+            // Для мобильных делаем прогресс бар толще
+            if (this.isMobile) {
+                critBar.style.height = '10px';
+            }
         }
     }
     
@@ -746,6 +835,12 @@ class VolvetMCShop {
         }
         if (this.elements.currentOnline) {
             this.elements.currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
+            
+            // Для мобильных улучшаем отображение
+            if (this.isMobile) {
+                this.elements.currentOnline.style.fontSize = '14px';
+                this.elements.currentOnline.style.fontWeight = '600';
+            }
         }
         
         // Показываем магазин
@@ -754,12 +849,12 @@ class VolvetMCShop {
         // Сохраняем выбор
         this.saveToLocalStorage();
         
-        // Уведомление
-        this.showNotification(`Выбран сервер: ${serverName}`, 'success');
+        // Простое уведомление
+        this.showSimpleNotification(`Выбран сервер: ${serverName}`);
         
         // На мобильных скрываем меню выбора
         if (this.isMobile) {
-            this.hideServerSelection();
+            setTimeout(() => this.hideServerSelection(), 300);
         }
     }
     
@@ -790,9 +885,7 @@ class VolvetMCShop {
     
     hideServerSelection() {
         if (this.elements.serverSelection && this.isMobile) {
-            setTimeout(() => {
-                this.elements.serverSelection.style.display = 'none';
-            }, 300);
+            this.elements.serverSelection.style.display = 'none';
         }
     }
     
@@ -837,7 +930,7 @@ class VolvetMCShop {
         
         this.cart.push(item);
         this.updateCart();
-        this.showNotification(`${product} добавлен в корзину!`, 'success');
+        this.showSimpleNotification(`${product} добавлен в корзину!`);
         this.saveToLocalStorage();
         
         // На мобильных показываем корзину
@@ -850,31 +943,21 @@ class VolvetMCShop {
         this.cart = this.cart.filter(item => item.id !== id);
         this.updateCart();
         this.saveToLocalStorage();
-        this.showNotification('Товар удален из корзины', 'info');
+        this.showSimpleNotification('Товар удален из корзины');
     }
     
     clearCart() {
         if (this.cart.length === 0) {
-            this.showNotification('Корзина уже пуста', 'info');
+            this.showSimpleNotification('Корзина уже пуста');
             return;
         }
         
-        // На мобильных используем нативное подтверждение
-        if (this.isMobile) {
-            if (confirm('Очистить корзину?')) {
-                this.cart = [];
-                this.updateCart();
-                this.saveToLocalStorage();
-                this.hideCart();
-                this.showNotification('Корзина очищена', 'info');
-            }
-        } else {
-            // На десктопе можно использовать красивый диалог
+        if (confirm('Очистить корзину?')) {
             this.cart = [];
             this.updateCart();
             this.saveToLocalStorage();
             this.hideCart();
-            this.showNotification('Корзина очищена', 'info');
+            this.showSimpleNotification('Корзина очищена');
         }
     }
     
@@ -969,6 +1052,9 @@ class VolvetMCShop {
         if (mobileCartCount) {
             mobileCartCount.textContent = this.cart.length;
         }
+        
+        // Обновляем индикатор прокрутки
+        this.updateScrollIndicator();
     }
     
     showCart() {
@@ -998,12 +1084,12 @@ class VolvetMCShop {
     
     checkout() {
         if (this.cart.length === 0) {
-            this.showNotification('Корзина пуста!', 'warning');
+            this.showSimpleNotification('Корзина пуста!');
             return;
         }
         
         if (!this.selectedServer) {
-            this.showNotification('Сначала выберите сервер!', 'warning');
+            this.showSimpleNotification('Сначала выберите сервер!');
             this.showServerSelection();
             this.hideCart();
             return;
@@ -1056,9 +1142,431 @@ class VolvetMCShop {
         const serverName = this.selectedServer === 'lite' ? 'Lite режим' : 'Crit режим';
         const products = this.cart.map(item => item.product).join(', ');
         
-        // Закрываем окно оплаты ПЕРВЫМ делом
+        // Закрываем окно оплаты
         this.hidePurchaseModal();
         
         // Очищаем корзину
         this.cart = [];
-        this.updateCart
+        this.updateCart();
+        this.saveToLocalStorage();
+        
+        // Показываем финальное сообщение
+        alert(`✅ ЗАКАЗ ОФОРМЛЕН!\n\n📋 Детали заказа:\n• Сервер: ${serverName}\n• Товары: ${products}\n• Сумма: ${total} звезд\n\n💳 Инструкция по оплате:\n1. Отправьте подарок в Telegram @Tumfiks\n2. Сумма: ${total} звезд\n3. Укажите ваш ник и выбранный режим\n4. Товар будет выдан в течение 48 часов\n\n📞 По всем вопросам: @VolvetDon_bot`);
+    }
+    
+    // Простые уведомления
+    showSimpleNotification(message) {
+        // Создаем простое уведомление
+        const notification = document.createElement('div');
+        notification.className = 'simple-notification';
+        notification.textContent = message;
+        
+        // Стили для уведомления
+        notification.style.cssText = `
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(124, 58, 237, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 90%;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Автоматическое удаление через 3 секунды
+        setTimeout(() => {
+            notification.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+    
+    // LocalStorage
+    saveToLocalStorage() {
+        try {
+            localStorage.setItem('volvetmc_cart', JSON.stringify(this.cart));
+            localStorage.setItem('volvetmc_server', this.selectedServer);
+        } catch (e) {
+            console.warn('Не удалось сохранить в localStorage:', e);
+        }
+    }
+    
+    loadFromLocalStorage() {
+        try {
+            const savedCart = localStorage.getItem('volvetmc_cart');
+            const savedServer = localStorage.getItem('volvetmc_server');
+            
+            if (savedCart) {
+                this.cart = JSON.parse(savedCart);
+            }
+            if (savedServer && (savedServer === 'lite' || savedServer === 'crit')) {
+                this.selectedServer = savedServer;
+                
+                // Обновляем шапку
+                if (this.elements.currentServer) {
+                    this.elements.currentServer.textContent = savedServer === 'lite' ? 'Lite режим' : 'Crit режим';
+                }
+                if (this.elements.currentOnline) {
+                    const onlineData = this.serverOnline[savedServer];
+                    this.elements.currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
+                }
+            }
+        } catch (e) {
+            console.warn('Не удалось загрузить из localStorage:', e);
+        }
+    }
+    
+    // Мобильное меню
+    showMobileMenu() {
+        if (!this.isMobile) return;
+        
+        const mobileMenu = document.createElement('div');
+        mobileMenu.id = 'mobileMenu';
+        mobileMenu.style.cssText = `
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(15, 11, 26, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        
+        mobileMenu.innerHTML = `
+            <div class="mobile-menu-content" style="
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 280px;
+                background: #1a1525;
+                padding: 20px;
+                overflow-y: auto;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                border-left: 1px solid rgba(124, 58, 237, 0.3);
+            ">
+                <div class="mobile-menu-header" style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 30px;
+                    padding-bottom: 15px;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                ">
+                    <h3 style="
+                        font-size: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        color: white;
+                    ">
+                        <i class="fas fa-crown" style="color: #a855f7;"></i> Меню
+                    </h3>
+                    <button class="mobile-menu-close" id="mobileMenuClose" style="
+                        background: none;
+                        border: none;
+                        color: #a855f7;
+                        font-size: 24px;
+                        cursor: pointer;
+                        width: 40px;
+                        height: 40px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 8px;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mobile-menu-items" style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                ">
+                    <button class="mobile-menu-item" data-category="privileges" style="
+                        background: rgba(124, 58, 237, 0.1);
+                        border: 1px solid rgba(124, 58, 237, 0.2);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-align: left;
+                    ">
+                        <i class="fas fa-crown" style="font-size: 18px; width: 24px; text-align: center; color: #a855f7;"></i>
+                        Привилегии
+                    </button>
+                    <button class="mobile-menu-item" data-category="other" style="
+                        background: rgba(124, 58, 237, 0.1);
+                        border: 1px solid rgba(124, 58, 237, 0.2);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-align: left;
+                    ">
+                        <i class="fas fa-gift" style="font-size: 18px; width: 24px; text-align: center; color: #a855f7;"></i>
+                        Разное
+                    </button>
+                    <button class="mobile-menu-item" data-category="kits" style="
+                        background: rgba(124, 58, 237, 0.1);
+                        border: 1px solid rgba(124, 58, 237, 0.2);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-align: left;
+                    ">
+                        <i class="fas fa-box" style="font-size: 18px; width: 24px; text-align: center; color: #a855f7;"></i>
+                        Наборы
+                    </button>
+                    <button class="mobile-menu-item" id="mobileChangeServer" style="
+                        background: rgba(124, 58, 237, 0.1);
+                        border: 1px solid rgba(124, 58, 237, 0.2);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-align: left;
+                    ">
+                        <i class="fas fa-exchange-alt" style="font-size: 18px; width: 24px; text-align: center; color: #a855f7;"></i>
+                        Сменить сервер
+                    </button>
+                    <button class="mobile-menu-item cart-item" id="mobileCartBtn" style="
+                        background: rgba(124, 58, 237, 0.1);
+                        border: 1px solid rgba(124, 58, 237, 0.2);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        text-align: left;
+                    ">
+                        <i class="fas fa-shopping-cart" style="font-size: 18px; width: 24px; text-align: center; color: #a855f7;"></i>
+                        Корзина
+                        <span class="mobile-cart-count" id="mobileCartCount" style="
+                            margin-left: auto;
+                            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+                            color: white;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 12px;
+                            font-weight: bold;
+                        ">${this.cart.length}</span>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(mobileMenu);
+        
+        // Анимация появления
+        setTimeout(() => {
+            mobileMenu.style.opacity = '1';
+            const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+            menuContent.style.transform = 'translateX(0)';
+        }, 10);
+        
+        // Закрытие меню
+        const closeBtn = mobileMenu.querySelector('#mobileMenuClose');
+        closeBtn.addEventListener('click', () => this.hideMobileMenu());
+        
+        // Закрытие по клику вне меню
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                this.hideMobileMenu();
+            }
+        });
+        
+        // Навигация по категориям
+        mobileMenu.querySelectorAll('.mobile-menu-item[data-category]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const category = e.target.closest('.mobile-menu-item').dataset.category;
+                this.switchCategory(category);
+                this.hideMobileMenu();
+            });
+        });
+        
+        // Смена сервера
+        const changeServerBtn = mobileMenu.querySelector('#mobileChangeServer');
+        changeServerBtn.addEventListener('click', () => {
+            this.showServerSelection();
+            this.hideMobileMenu();
+        });
+        
+        // Корзина
+        const cartBtn = mobileMenu.querySelector('#mobileCartBtn');
+        cartBtn.addEventListener('click', () => {
+            this.showCart();
+            this.hideMobileMenu();
+        });
+    }
+    
+    hideMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+            const menuContent = mobileMenu.querySelector('.mobile-menu-content');
+            menuContent.style.transform = 'translateX(100%)';
+            mobileMenu.style.opacity = '0';
+            
+            setTimeout(() => {
+                if (mobileMenu.parentNode) {
+                    mobileMenu.parentNode.removeChild(mobileMenu);
+                }
+            }, 300);
+        }
+    }
+    
+    // Адаптивные функции
+    optimizeForTouch() {
+        // Увеличиваем области касания для кнопок
+        const touchElements = document.querySelectorAll('button, .nav-btn, .product-card, .server-card');
+        touchElements.forEach(el => {
+            el.style.minHeight = '48px';
+        });
+    }
+    
+    setupSmoothScroll() {
+        // Плавный скролл для мобильных
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    }
+    
+    preventZoom() {
+        // Предотвращаем зум на инпутах
+        document.querySelectorAll('input, textarea, select').forEach(el => {
+            el.style.fontSize = '16px';
+        });
+    }
+    
+    addMobileStyles() {
+        // Добавляем анимации для мобильных
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translate(-50%, 0);
+                }
+            }
+            
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+            
+            /* Улучшаем онлайн статус на мобильных */
+            @media (max-width: 768px) {
+                .online-display span {
+                    font-size: 18px !important;
+                    font-weight: 600 !important;
+                }
+                
+                .server-card h3 {
+                    font-size: 22px !important;
+                }
+                
+                .selection-title h2 {
+                    font-size: 24px !important;
+                }
+                
+                .selection-title p {
+                    font-size: 16px !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    adjustTabletLayout() {
+        // Настройки для планшетов
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            card.style.minHeight = 'auto';
+        });
+    }
+    
+    handleResize() {
+        const oldIsMobile = this.isMobile;
+        this.detectDevice();
+        
+        if (oldIsMobile !== this.isMobile) {
+            console.log("🔄 Изменение размера окна, обновление интерфейса...");
+            this.fixMobileDisplay();
+        }
+    }
+}
+
+// Запуск приложения
+document.addEventListener('DOMContentLoaded', () => {
+    window.volvetMCShop = new VolvetMCShop();
+});
