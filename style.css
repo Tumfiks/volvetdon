@@ -1360,4 +1360,347 @@ body {
     border-top: 1px solid rgba(124, 58, 237, 0.2);
 }
 
+/* === ДОБАВИТЬ В КОНЕЦ ФАЙЛА style.css === */
+
+/* Адаптивность для планшетов */
+@media (max-width: 992px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .server-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .server-card {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .shop-nav {
+        flex-wrap: wrap;
+    }
+    
+    .nav-btn {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+    }
+    
+    .cart-modal-content,
+    .checkout-modal-content {
+        width: 90%;
+        max-height: 85vh;
+    }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .header .container {
+        flex-wrap: wrap;
+    }
+    
+    .server-info {
+        order: 3;
+        width: 100%;
+        margin-top: 10px;
+        justify-content: space-between;
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .logo h1 {
+        font-size: 20px;
+    }
+    
+    .selection-title h2 {
+        font-size: 28px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .selection-title p {
+        font-size: 16px;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .product-card {
+        padding: 15px;
+    }
+    
+    .shop-nav {
+        overflow-x: auto;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        padding: 5px;
+    }
+    
+    .nav-btn {
+        white-space: nowrap;
+        padding: 8px 15px;
+    }
+    
+    .category-title {
+        font-size: 24px;
+    }
+    
+    /* Адаптивные модальные окна */
+    .cart-modal-content,
+    .checkout-modal-content {
+        width: 95%;
+        max-height: 80vh;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: fixed;
+    }
+    
+    .cart-header,
+    .checkout-header {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .cart-header-main,
+    .checkout-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .cart-actions,
+    .checkout-actions {
+        flex-direction: column;
+    }
+    
+    .btn-clear-cart,
+    .btn-checkout,
+    .btn-cancel,
+    .btn-confirm {
+        width: 100%;
+    }
+    
+    .cart-items-section {
+        padding: 15px;
+        max-height: 250px;
+    }
+    
+    .cart-summary,
+    .checkout-details,
+    .checkout-instruction {
+        padding: 15px;
+    }
+    
+    .instruction-steps {
+        gap: 15px;
+    }
+    
+    .step {
+        gap: 10px;
+    }
+    
+    .step-content strong {
+        font-size: 13px;
+    }
+    
+    .step-content p {
+        font-size: 12px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+}
+
+/* Адаптивность для очень маленьких экранов */
+@media (max-width: 480px) {
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .server-info {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .selected-server,
+    .online-status,
+    .btn-change-server {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    
+    .cart-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .server-card {
+        padding: 20px 15px;
+    }
+    
+    .server-card h3 {
+        font-size: 24px;
+    }
+    
+    .product-card h3 {
+        font-size: 18px;
+    }
+    
+    .product-price {
+        font-size: 16px;
+    }
+    
+    .product-features li {
+        font-size: 13px;
+    }
+    
+    .btn-buy {
+        padding: 10px;
+        font-size: 13px;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .cart-item-price {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .total-amount {
+        font-size: 20px;
+    }
+    
+    .instruction-card {
+        padding: 15px;
+    }
+    
+    .instruction-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Стили для улучшения пользовательского опыта на мобильных */
+@media (hover: none) {
+    .btn-select-server:hover,
+    .btn-buy:hover,
+    .btn-change-server:hover,
+    .nav-btn:hover {
+        transform: none;
+    }
+    
+    .product-card:hover {
+        transform: none;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .cart-item:hover {
+        transform: none;
+    }
+}
+
+/* Улучшение скролла на мобильных */
+@media (max-width: 768px) {
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .cart-items-section,
+    .checkout-modal-content {
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .cart-items-section::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .cart-items-section::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .cart-items-section::-webkit-scrollbar-thumb {
+        background: var(--accent-2);
+        border-radius: 2px;
+    }
+}
+
+/* Анимации для мобильных */
+@media (max-width: 768px) {
+    .server-selection,
+    .shop {
+        animation: fadeInUp 0.5s ease;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .cart-modal.show .cart-modal-content,
+    .checkout-modal.show .checkout-modal-content {
+        animation: slideInUp 0.4s ease;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -40%);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+/* Безопасные области для iPhone X и новее */
+@supports (padding: max(0px)) {
+    .header,
+    .footer {
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+    }
+    
+    .header {
+        padding-top: max(15px, env(safe-area-inset-top));
+    }
+    
+    .footer {
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    
+    .cart-modal-content,
+    .checkout-modal-content {
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
 .f
