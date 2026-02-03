@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>VolvetMC | Магазин доната</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -37,6 +37,71 @@
             </button>
         </div>
     </header>
+
+    <!-- Мобильное меню -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <div class="mobile-logo">
+                    <i class="fas fa-crown"></i>
+                    <span>VolvetMC</span>
+                </div>
+                <button class="mobile-menu-close" id="mobileMenuClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="mobile-menu-body">
+                <div class="mobile-server-info">
+                    <div class="mobile-server-item">
+                        <i class="fas fa-server"></i>
+                        <span id="mobileCurrentServer">Не выбран</span>
+                    </div>
+                    <div class="mobile-server-item">
+                        <i class="fas fa-users"></i>
+                        <span id="mobileCurrentOnline">-/-</span>
+                    </div>
+                </div>
+                
+                <div class="mobile-menu-nav">
+                    <button class="mobile-nav-btn" id="mobileChangeServer">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Сменить сервер</span>
+                    </button>
+                    
+                    <div class="mobile-menu-divider"></div>
+                    
+                    <button class="mobile-nav-btn" data-category="privileges">
+                        <i class="fas fa-crown"></i>
+                        <span>Привилегии</span>
+                    </button>
+                    <button class="mobile-nav-btn" data-category="other">
+                        <i class="fas fa-gift"></i>
+                        <span>Разное</span>
+                    </button>
+                    <button class="mobile-nav-btn" data-category="kits">
+                        <i class="fas fa-box"></i>
+                        <span>Наборы</span>
+                    </button>
+                    
+                    <div class="mobile-menu-divider"></div>
+                    
+                    <button class="mobile-nav-btn" id="mobileCartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Корзина</span>
+                        <span class="mobile-cart-count" id="mobileCartCount">0</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mobile-menu-footer">
+                <div class="mobile-footer-info">
+                    <p><i class="fas fa-robot"></i> Бот: @VolvetDon_bot</p>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu-overlay"></div>
+    </div>
 
     <!-- Главный экран - Выбор сервера -->
     <section class="server-selection active" id="serverSelection">
