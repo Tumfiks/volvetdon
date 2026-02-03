@@ -25,7 +25,7 @@
                     <span id="currentOnline">Онлайн: -/-</span>
                 </div>
                 <button class="btn-change-server" id="changeServerBtn">
-                    <i class="fas fa-exchange-alt"></i> Сменить
+                    <i class="fas fa-exchange-alt"></i> <span class="btn-text">Сменить</span>
                 </button>
                 <div class="cart-icon" id="cartIcon">
                     <i class="fas fa-shopping-cart"></i>
@@ -96,13 +96,13 @@
             <!-- Навигация -->
             <nav class="shop-nav">
                 <button class="nav-btn active" data-category="privileges">
-                    <i class="fas fa-crown"></i> Привилегии
+                    <i class="fas fa-crown"></i> <span class="nav-text">Привилегии</span>
                 </button>
                 <button class="nav-btn" data-category="other">
-                    <i class="fas fa-gift"></i> Разное
+                    <i class="fas fa-gift"></i> <span class="nav-text">Разное</span>
                 </button>
                 <button class="nav-btn" data-category="kits">
-                    <i class="fas fa-box"></i> Наборы
+                    <i class="fas fa-box"></i> <span class="nav-text">Наборы</span>
                 </button>
             </nav>
 
@@ -455,10 +455,10 @@
                 <div class="footer-links">
                     <a href="#"><i class="fas fa-book"></i> Правила</a>
                     <a href="#"><i class="fas fa-headset"></i> Поддержка</a>
-                    <a href="#"><i class="fab fa-tg"></i> Telegram</a>
+                    <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
                 </div>
                 <div class="footer-info">
-                    <p class="warning">Telegram бот : @VolvetDon_bot</p>
+                    <p class="warning">Telegram бот: @VolvetDon_bot</p>
                 </div>
             </div>
         </div>
@@ -466,7 +466,7 @@
 
     <!-- Корзина -->
     <div class="cart-modal" id="cartModal">
-        <div class="cart-modal-overlay"></div>
+        <div class="cart-modal-overlay" id="cartModalOverlay"></div>
         <div class="cart-modal-content">
             <div class="cart-header">
                 <div class="cart-header-main">
@@ -567,7 +567,7 @@
 
     <!-- Оформление заказа -->
     <div class="checkout-modal" id="purchaseModal">
-        <div class="checkout-modal-overlay"></div>
+        <div class="checkout-modal-overlay" id="checkoutModalOverlay"></div>
         <div class="checkout-modal-content">
             <div class="checkout-header">
                 <div class="checkout-icon">
@@ -645,7 +645,7 @@
                         <div class="step">
                             <div class="step-number">3</div>
                             <div class="step-content">
-                                <strong>Укажите свой ник </strong>
+                                <strong>Укажите свой ник</strong>
                                 <p>И выбранный режим</p>
                             </div>
                         </div>
@@ -661,7 +661,7 @@
                     
                     <div class="instruction-note">
                         <i class="fas fa-exclamation-circle"></i>
-                        <span>Если меньше 15 звезд отправьте их под пост @VolvetMCPE и укажите ник и режим в коментариях</span>
+                        <span>Если меньше 15 звезд отправьте их под пост @VolvetMCPE и укажите ник и режим в комментариях</span>
                     </div>
                 </div>
             </div>
