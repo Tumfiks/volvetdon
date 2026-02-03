@@ -150,6 +150,207 @@ body {
     color: var(--accent-2);
     font-size: 24px;
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Мобильное меню */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+}
+
+.mobile-menu.show {
+    display: block;
+}
+
+.mobile-menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 11, 26, 0.95);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.mobile-menu-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85%;
+    background: var(--secondary-bg);
+    border-left: 1px solid rgba(124, 58, 237, 0.3);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-menu.show .mobile-menu-content {
+    transform: translateX(0);
+}
+
+.mobile-menu-header {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gradient-purple);
+}
+
+.mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+}
+
+.mobile-logo i {
+    color: var(--accent-3);
+}
+
+.mobile-menu-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-menu-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-menu-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.mobile-server-info {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+}
+
+.mobile-server-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.mobile-server-item:last-child {
+    margin-bottom: 0;
+}
+
+.mobile-server-item i {
+    color: var(--accent-2);
+    font-size: 18px;
+    width: 24px;
+}
+
+.mobile-server-item span {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.mobile-menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 20px;
+}
+
+.mobile-nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    width: 100%;
+}
+
+.mobile-nav-btn:hover {
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--text-primary);
+}
+
+.mobile-cart-count {
+    margin-left: auto;
+    background: #ef4444;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-menu-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 10px 0;
+}
+
+.mobile-menu-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(26, 21, 37, 0.8);
+}
+
+.mobile-footer-info {
+    text-align: center;
+}
+
+.mobile-footer-info p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.mobile-footer-info i {
+    color: var(--accent-2);
 }
 
 /* Главный экран - Выбор сервера */
@@ -157,7 +358,7 @@ body {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding-top: 80px;
+    padding: 100px 0 40px;
     opacity: 1;
     transform: translateY(0);
 }
@@ -327,7 +528,7 @@ body {
 /* Магазин */
 .shop {
     display: none;
-    padding-top: 80px;
+    padding: 100px 0 40px;
     min-height: 100vh;
 }
 
@@ -343,6 +544,7 @@ body {
     background: rgba(26, 21, 37, 0.8);
     padding: 10px;
     border-radius: 10px;
+    flex-wrap: wrap;
 }
 
 .nav-btn {
@@ -358,6 +560,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    white-space: nowrap;
 }
 
 .nav-btn:hover {
@@ -514,7 +717,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 1999;
 }
 
 .cart-modal.show {
@@ -1038,7 +1241,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10000;
+    z-index: 2000;
 }
 
 .checkout-modal.show {
@@ -1359,202 +1562,438 @@ body {
     margin-top: 60px;
     border-top: 1px solid rgba(124, 58, 237, 0.2);
 }
-/* Мобильное меню */
-.mobile-menu {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1001;
-}
 
-.mobile-menu-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 11, 26, 0.95);
-    backdrop-filter: blur(10px);
-    animation: fadeIn 0.3s ease;
-}
-
-.mobile-menu-content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 85%;
-    max-width: 320px;
-    background: var(--secondary-bg);
-    border-left: 1px solid rgba(124, 58, 237, 0.3);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-}
-
-.mobile-menu.show .mobile-menu-content {
-    transform: translateX(0);
-}
-
-.mobile-menu-header {
-    padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.footer-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--gradient-purple);
+    flex-wrap: wrap;
+    gap: 30px;
 }
 
-.mobile-logo {
+.footer-logo h3 {
+    font-size: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 20px;
-    font-weight: 700;
-    color: white;
 }
 
-.mobile-logo i {
-    color: var(--accent-3);
-}
-
-.mobile-menu-close {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.mobile-menu-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.mobile-menu-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 0;
-}
-
-.mobile-server-info {
-    padding: 0 20px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 20px;
-}
-
-.mobile-server-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.mobile-server-item:last-child {
-    margin-bottom: 0;
-}
-
-.mobile-server-item i {
-    color: var(--accent-2);
-    font-size: 18px;
-    width: 24px;
-}
-
-.mobile-server-item span {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text-primary);
-}
-
-.mobile-menu-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 0 20px;
-}
-
-.mobile-nav-btn {
-    background: none;
-    border: none;
+.footer-logo p {
     color: var(--text-secondary);
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.footer-links {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    text-align: left;
-    width: 100%;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.mobile-nav-btn:hover {
-    background: rgba(124, 58, 237, 0.1);
-    color: var(--text-primary);
-}
-
-.mobile-nav-btn.active {
-    background: rgba(124, 58, 237, 0.2);
-    color: var(--accent-2);
-}
-
-.mobile-cart-count {
-    margin-left: auto;
-    background: #ef4444;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.mobile-menu-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 10px 0;
-}
-
-.mobile-menu-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(26, 21, 37, 0.8);
-}
-
-.mobile-footer-info {
-    text-align: center;
-}
-
-.mobile-footer-info p {
+.footer-links a {
     color: var(--text-secondary);
+    text-decoration: none;
     font-size: 14px;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
+    transition: var(--transition);
 }
 
-.mobile-footer-info i {
+.footer-links a:hover {
     color: var(--accent-2);
 }
 
-.f
+.footer-info {
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.footer-info .warning {
+    color: #fbbf24;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* Уведомление */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--gradient-purple);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-card);
+    z-index: 9999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* ============================================= */
+/* АДАПТИВНОСТЬ ПОД РАЗНЫЕ УСТРОЙСТВА */
+/* ============================================= */
+
+/* Большие планшеты и маленькие ноутбуки (1024px и меньше) */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .server-card {
+        width: 340px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+/* Планшеты (768px и меньше) */
+@media (max-width: 768px) {
+    .header .container {
+        padding: 0 15px;
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+    }
+    
+    .server-info .selected-server,
+    .server-info .online-status,
+    .server-info .btn-change-server {
+        display: none;
+    }
+    
+    .selection-title h2 {
+        font-size: 28px;
+    }
+    
+    .selection-title p {
+        font-size: 16px;
+    }
+    
+    .server-cards {
+        gap: 20px;
+    }
+    
+    .server-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 25px 20px;
+    }
+    
+    .shop-nav {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 5px;
+        flex-wrap: nowrap;
+    }
+    
+    .nav-btn {
+        flex-shrink: 0;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 15px;
+    }
+    
+    .cart-modal-content,
+    .checkout-modal-content {
+        width: 95%;
+        max-width: 95%;
+        margin: 10px;
+    }
+    
+    .cart-actions,
+    .checkout-actions {
+        flex-direction: column;
+    }
+    
+    .btn-clear-cart,
+    .btn-checkout,
+    .btn-cancel,
+    .btn-confirm {
+        width: 100%;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .footer-links {
+        justify-content: center;
+    }
+}
+
+/* Мобильные телефоны (480px и меньше) */
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 20px;
+    }
+    
+    .selection-title h2 {
+        font-size: 24px;
+    }
+    
+    .selection-title p {
+        font-size: 14px;
+    }
+    
+    .server-card h3 {
+        font-size: 24px;
+    }
+    
+    .server-features p {
+        font-size: 13px;
+    }
+    
+    .shop {
+        padding-top: 90px;
+    }
+    
+    .category-title {
+        font-size: 22px;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-card {
+        padding: 15px;
+    }
+    
+    .product-card h3 {
+        font-size: 18px;
+    }
+    
+    .product-features li {
+        font-size: 13px;
+    }
+    
+    .cart-header,
+    .cart-server-info,
+    .cart-items-section,
+    .cart-summary,
+    .cart-actions,
+    .checkout-header,
+    .checkout-details,
+    .checkout-instruction,
+    .checkout-actions {
+        padding: 20px;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .cart-item-price {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .checkout-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .checkout-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+    
+    .instruction-steps {
+        gap: 15px;
+    }
+    
+    .step {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .step-number {
+        align-self: flex-start;
+    }
+    
+    .footer {
+        padding: 30px 0 15px;
+    }
+    
+    .footer-info .warning {
+        font-size: 13px;
+        padding: 8px 15px;
+    }
+}
+
+/* Очень маленькие телефоны (360px и меньше) */
+@media (max-width: 360px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .logo h1 {
+        font-size: 18px;
+    }
+    
+    .server-card {
+        padding: 20px 15px;
+    }
+    
+    .server-card h3 {
+        font-size: 20px;
+    }
+    
+    .online-display {
+        font-size: 18px;
+    }
+    
+    .nav-btn {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+    
+    .product-price {
+        font-size: 16px;
+    }
+    
+    .btn-buy {
+        padding: 10px;
+        font-size: 13px;
+    }
+    
+    .mobile-menu-content {
+        width: 280px;
+    }
+    
+    .cart-title h3 {
+        font-size: 20px;
+    }
+    
+    .checkout-title h3 {
+        font-size: 22px;
+    }
+    
+    .detail-value,
+    .step-content strong,
+    .step-content p {
+        font-size: 14px;
+    }
+}
+
+/* Портретная ориентация на мобильных */
+@media (max-height: 600px) and (orientation: portrait) {
+    .server-selection,
+    .shop {
+        padding: 90px 0 30px;
+        min-height: auto;
+    }
+    
+    .server-card {
+        margin-bottom: 20px;
+    }
+    
+    .cart-modal-content,
+    .checkout-modal-content {
+        max-height: 85vh;
+    }
+    
+    .cart-items-section {
+        max-height: 200px;
+    }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-height: 500px) and (orientation: landscape) {
+    .server-selection {
+        padding: 80px 0 20px;
+    }
+    
+    .server-card {
+        padding: 20px;
+        width: 300px;
+    }
+    
+    .cart-modal-content,
+    .checkout-modal-content {
+        max-height: 80vh;
+    }
+    
+    .cart-items-section {
+        max-height: 150px;
+    }
+}
+
+/* Улучшение для касаний на мобильных */
+@media (hover: none) and (pointer: coarse) {
+    .btn-select-server,
+    .btn-buy,
+    .nav-btn,
+    .btn-change-server,
+    .btn-checkout,
+    .btn-confirm,
+    .btn-cancel,
+    .btn-clear-cart,
+    .btn-browse,
+    .mobile-nav-btn {
+        min-height: 44px;
+    }
+    
+    .cart-icon,
+    .btn-remove-item,
+    .cart-close-btn,
+    .checkout-close,
+    .mobile-menu-close {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .product-card:hover,
+    .server-card:hover,
+    .cart-item:hover {
+        transform: none;
+    }
+}
