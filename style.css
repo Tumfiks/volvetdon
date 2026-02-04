@@ -1437,6 +1437,7 @@ body {
 }
 
 /* ==================== МОБИЛЬНАЯ АДАПТАЦИЯ ==================== */
+/* Добавляем это в конец файла */
 
 @media (max-width: 768px) {
     .container {
@@ -1449,11 +1450,11 @@ body {
     }
 
     .logo h1 {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .server-info {
-        gap: 10px;
+        gap: 8px;
     }
 
     .selected-server, .online-status {
@@ -1498,7 +1499,11 @@ body {
     }
 
     .selection-title p {
-        font-size: 16px;
+        font-size: 14px;
+    }
+
+    .server-cards {
+        gap: 20px;
     }
 
     .server-card {
@@ -1512,7 +1517,7 @@ body {
     }
 
     .server-card h3 {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .online-display {
@@ -1531,7 +1536,7 @@ body {
     }
 
     .nav-btn {
-        padding: 8px 12px;
+        padding: 10px 15px;
         font-size: 12px;
         flex: 1;
         min-width: calc(33.333% - 10px);
@@ -1539,7 +1544,7 @@ body {
     }
 
     .category-title {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .products-grid {
@@ -1557,20 +1562,9 @@ body {
 
     /* Корзина на мобильных */
     .cart-modal-content {
-        width: 100%;
-        height: 100%;
+        width: 95%;
         max-width: none;
-        max-height: none;
-        border-radius: 0;
-        top: 0;
-        left: 0;
-        transform: none;
-        animation: slideInMobile 0.4s ease;
-    }
-
-    @keyframes slideInMobile {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
+        border-radius: 15px;
     }
 
     .cart-header {
@@ -1636,31 +1630,23 @@ body {
 
     .btn-clear-cart, .btn-checkout {
         width: 100%;
-        padding: 12px;
+        padding: 15px;
     }
 
     .checkout-price {
         padding: 4px 10px;
-        font-size: 13px;
+        font-size: 14px;
     }
 
     /* Окно оформления заказа на мобильных */
     .checkout-modal-content {
-        width: 100%;
-        height: 100%;
+        width: 95%;
         max-width: none;
-        max-height: none;
-        border-radius: 0;
-        top: 0;
-        left: 0;
-        transform: none;
-        animation: slideInMobile 0.4s ease;
-        overflow-y: auto;
+        border-radius: 15px;
     }
 
     .checkout-header {
         padding: 20px;
-        flex-wrap: wrap;
     }
 
     .checkout-icon {
@@ -1705,7 +1691,7 @@ body {
 
     .btn-cancel, .btn-confirm {
         width: 100%;
-        padding: 12px;
+        padding: 15px;
     }
 
     /* Футер на мобильных */
@@ -1728,6 +1714,7 @@ body {
         justify-content: center;
         flex-wrap: wrap;
         width: 100%;
+        gap: 15px;
     }
 
     .footer-info {
@@ -1742,7 +1729,7 @@ body {
 
 @media (max-width: 480px) {
     .logo h1 {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .selection-title h2 {
@@ -1750,7 +1737,7 @@ body {
     }
 
     .server-card h3 {
-        font-size: 22px;
+        font-size: 20px;
     }
 
     .server-features p {
@@ -1759,6 +1746,8 @@ body {
 
     .nav-btn {
         min-width: calc(50% - 10px);
+        font-size: 11px;
+        padding: 8px 10px;
     }
 
     .cart-item-name {
