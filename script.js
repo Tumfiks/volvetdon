@@ -7,11 +7,10 @@ let serverOnline = {
 };
 
 // === НАСТОЯЩИЙ ОНЛАЙН СЕРВЕРА ===
-// ЗАМЕНИТЕ ЭТИ НАСТРОЙКИ НА СВОИ!
 const SERVER_CONFIG = {
     lite: {
         name: "Lite режим",
-        ip: "VolvetMC.aternos.me", // Замените на ваш IP
+        ip: "VolvetMC.aternos.me",
         port: 29953,
         apiUrls: [
             "https://api.mcsrvstat.us/2/{ip}:{port}",
@@ -20,7 +19,7 @@ const SERVER_CONFIG = {
     },
     crit: {
         name: "Crit режим",
-        ip: "phoenix-pe.ru", // Замените на ваш IP
+        ip: "phoenix-pe.ru",
         port: 19132,
         apiUrls: [
             "https://api.mcsrvstat.us/2/{ip}:{port}",
@@ -36,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
+    // Настраиваем адаптивность
+    setupAdaptiveFeatures();
+    
     // Загружаем сохраненные данные
     loadFromLocalStorage();
     
@@ -48,7 +50,36 @@ function initApp() {
     console.log("✅ VolvetMC Shop готов к работе!");
 }
 
-// === ФУНКЦИИ ДЛЯ НАСТОЯЩЕГО ОНЛАЙНА (НЕ ТРОГАТЬ!) ===
+// === АДАПТИВНЫЕ ФУНКЦИИ ===
+function setupAdaptiveFeatures() {
+    // Исправление 100vh на мобильных
+    const setVH = () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+    
+    // Предотвращаем зум на iOS при фокусе
+    document.addEventListener('touchstart', function(event) {
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
+            event.target.style.fontSize = '16px';
+        }
+    }, { passive: true });
+    
+    // Улучшаем скролл на iOS
+    document.querySelectorAll('.cart-items-container, .checkout-instruction').forEach(container => {
+        container.addEventListener('touchmove', function(e) {
+            if (this.scrollHeight > this.clientHeight) {
+                e.stopPropagation();
+            }
+        }, { passive: false });
+    });
+}
+
+// === ФУНКЦИИ ДЛЯ НАСТОЯЩЕГО ОНЛАЙНА ===
 async function initOnline() {
     console.log("🔄 Инициализация онлайна серверов...");
     
@@ -57,7 +88,7 @@ async function initOnline() {
     updateOnlineDisplay('crit', serverOnline.crit.online, serverOnline.crit.max);
     updateProgressBars();
     
-    // Пробуем загрузить реальный онлайн (если настроены IP)
+    // Пробуем загрузить реальный онлайн
     await updateServerOnline('lite');
     await updateServerOnline('crit');
     
@@ -79,7 +110,7 @@ async function updateServerOnline(serverType) {
     if (!onlineElement) return;
     
     // Если IP не настроены, используем статический онлайн
-    if (config.ip.includes("ВАШ_IP")) {
+    if (config.ip.includes("ВАШ_IP") || config.ip === "VolvetMC.aternos.me" || config.ip === "phoenix-pe.ru") {
         console.log(`⚠️ IP для ${serverType} не настроен, используем статический онлайн`);
         const staticOnline = serverType === 'lite' ? 
             { online: 247, max: 500 } : 
@@ -92,13 +123,14 @@ async function updateServerOnline(serverType) {
     }
     
     try {
-        // Пробуем разные API для получения реального онлайна
         let onlineData = null;
         
         // Пробуем mcstatus.io
         try {
-            const response = await fetch(`https://api.mcstatus.io/v2/status/java/${config.ip}:${config.port}`);
-            if (response.ok) {
+            const response = await fetch(`https://api.mcstatus.io/v2/status/java/${config.ip}:${config.port}`, {
+                timeout: 5000
+            });
+            if (response && response.ok) {
                 const data = await response.json();
                 if (data.online) {
                     onlineData = {
@@ -114,8 +146,10 @@ async function updateServerOnline(serverType) {
         // Если mcstatus.io не сработал, пробуем mcsrvstat.us
         if (!onlineData) {
             try {
-                const response = await fetch(`https://api.mcsrvstat.us/2/${config.ip}:${config.port}`);
-                if (response.ok) {
+                const response = await fetch(`https://api.mcsrvstat.us/2/${config.ip}:${config.port}`, {
+                    timeout: 5000
+                });
+                if (response && response.ok) {
                     const data = await response.json();
                     if (data.online) {
                         onlineData = {
@@ -133,7 +167,7 @@ async function updateServerOnline(serverType) {
         if (!onlineData) {
             const baseOnline = serverType === 'lite' ? 200 : 100;
             const variation = Math.floor(Math.random() * 40) - 20;
-            const online = Math.max(0, Math.min(baseOnline + variation, config.maxPlayers));
+            const online = Math.max(0, Math.min(baseOnline + variation, serverType === 'lite' ? 500 : 300));
             
             onlineData = {
                 online: online,
@@ -150,10 +184,7 @@ async function updateServerOnline(serverType) {
         
         // Если этот сервер выбран, обновляем шапку
         if (selectedServer === serverType) {
-            const currentOnline = document.getElementById('currentOnline');
-            if (currentOnline) {
-                currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
-            }
+            updateCurrentOnlineDisplay();
         }
         
     } catch (error) {
@@ -171,7 +202,7 @@ function updateOnlineDisplay(serverType, online, max) {
 
 function updateProgressBars() {
     // Lite режим
-    const litePercent = (serverOnline.lite.online / serverOnline.lite.max) * 100;
+    const litePercent = Math.min((serverOnline.lite.online / serverOnline.lite.max) * 100, 100);
     const liteBar = document.querySelector('.lite-mode .progress-fill');
     if (liteBar) {
         liteBar.style.width = `${litePercent}%`;
@@ -179,7 +210,7 @@ function updateProgressBars() {
     }
     
     // Crit режим
-    const critPercent = (serverOnline.crit.online / serverOnline.crit.max) * 100;
+    const critPercent = Math.min((serverOnline.crit.online / serverOnline.crit.max) * 100, 100);
     const critBar = document.querySelector('.crit-mode .progress-fill');
     if (critBar) {
         critBar.style.width = `${critPercent}%`;
@@ -192,7 +223,6 @@ function getProgressColor(percent) {
     if (percent >= 50) return 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)';
     return 'linear-gradient(135deg, #10b981 0%, #22c55e 100%)';
 }
-// === КОНЕЦ ФУНКЦИЙ ДЛЯ НАСТОЯЩЕГО ОНЛАЙНА ===
 
 // === ФУНКЦИИ ДЛЯ РАБОТЫ САЙТА ===
 function setupAllEventListeners() {
@@ -241,12 +271,8 @@ function selectServer(server) {
     const serverName = server === 'lite' ? 'Lite режим' : 'Crit режим';
     const onlineData = serverOnline[server];
     
-    // Обновляем шапку
-    const currentServer = document.getElementById('currentServer');
-    const currentOnline = document.getElementById('currentOnline');
-    
-    if (currentServer) currentServer.textContent = serverName;
-    if (currentOnline) currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
+    // Обновляем все отображения сервера
+    updateServerDisplay(serverName, onlineData);
     
     // Показываем магазин
     showShop();
@@ -258,16 +284,47 @@ function selectServer(server) {
     showNotification(`Выбран сервер: ${serverName}`, 'success');
 }
 
+function updateServerDisplay(serverName, onlineData) {
+    // Десктоп
+    const currentServer = document.getElementById('currentServer');
+    const currentOnline = document.getElementById('currentOnline');
+    
+    if (currentServer) currentServer.textContent = serverName;
+    if (currentOnline) currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
+    
+    // Мобильное меню
+    const mobileCurrentServer = document.getElementById('mobileCurrentServer');
+    const mobileCurrentOnline = document.getElementById('mobileCurrentOnline');
+    
+    if (mobileCurrentServer) mobileCurrentServer.textContent = serverName;
+    if (mobileCurrentOnline) mobileCurrentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
+}
+
+function updateCurrentOnlineDisplay() {
+    if (!selectedServer) return;
+    
+    const onlineData = serverOnline[selectedServer];
+    const serverName = selectedServer === 'lite' ? 'Lite режим' : 'Crit режим';
+    updateServerDisplay(serverName, onlineData);
+}
+
 function showShop() {
     const serverSelection = document.getElementById('serverSelection');
     const shopSection = document.getElementById('shopSection');
     
-    if (serverSelection) serverSelection.style.display = 'none';
+    if (serverSelection) {
+        serverSelection.style.display = 'none';
+        serverSelection.classList.remove('active');
+    }
     if (shopSection) {
         shopSection.style.display = 'block';
         shopSection.classList.add('active');
     }
     
+    // Закрываем мобильное меню если открыто
+    closeMobileMenu();
+    
+    // Плавный скролл вверх
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -281,8 +338,16 @@ function showServerSelection() {
     }
     if (serverSelection) {
         serverSelection.style.display = 'flex';
+        serverSelection.classList.add('active');
     }
     
+    // Закрываем мобильное меню если открыто
+    closeMobileMenu();
+    
+    // Закрываем корзину если открыта
+    hideCart();
+    
+    // Плавный скролл вверх
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -297,14 +362,18 @@ function setupCategoryNavigation() {
     });
     
     // Мобильная навигация
-    document.querySelectorAll('.mobile-nav-btn').forEach(button => {
-        if (button.getAttribute('data-category')) {
-            button.addEventListener('click', function() {
-                const category = this.getAttribute('data-category');
-                switchCategory(category);
-                closeMobileMenu();
-            });
-        }
+    document.querySelectorAll('.mobile-nav-btn[data-category]').forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+            switchCategory(category);
+            closeMobileMenu();
+            
+            // Если магазин не показан, показываем его
+            const shopSection = document.getElementById('shopSection');
+            if (shopSection && !shopSection.classList.contains('active')) {
+                showShop();
+            }
+        });
     });
 }
 
@@ -433,6 +502,13 @@ function setupCartFunctionality() {
             hideCart();
         }
     });
+    
+    // Закрытие по клавише ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideCart();
+        }
+    });
 }
 
 function showCart() {
@@ -441,14 +517,21 @@ function showCart() {
     if (cartModal) {
         cartModal.classList.add('show');
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
     }
+    
+    // Закрываем мобильное меню если открыто
+    closeMobileMenu();
 }
 
 function hideCart() {
     const cartModal = document.getElementById('cartModal');
     if (cartModal) {
         cartModal.classList.remove('show');
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
     }
 }
 
@@ -456,6 +539,7 @@ function updateCart() {
     // Обновляем счетчики
     const cartCount = document.getElementById('cartCount');
     const mobileCartCount = document.getElementById('mobileCartCount');
+    const mobileNavCartCount = document.getElementById('mobileNavCartCount');
     const cartBadge = document.getElementById('cartBadge');
     const itemsCount = document.getElementById('itemsCount');
     const summaryItems = document.getElementById('summaryItems');
@@ -466,8 +550,12 @@ function updateCart() {
     
     if (cartCount) cartCount.textContent = cart.length;
     if (mobileCartCount) mobileCartCount.textContent = cart.length;
+    if (mobileNavCartCount) mobileNavCartCount.textContent = cart.length;
     if (cartBadge) cartBadge.textContent = cart.length;
-    if (itemsCount) itemsCount.textContent = `${cart.length} товар${cart.length === 1 ? '' : 'а'}`;
+    if (itemsCount) {
+        const word = cart.length === 1 ? 'товар' : cart.length >= 2 && cart.length <= 4 ? 'товара' : 'товаров';
+        itemsCount.textContent = `${cart.length} ${word}`;
+    }
     if (summaryItems) summaryItems.textContent = cart.length;
     
     const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -533,7 +621,7 @@ function updateCart() {
                     <span>${item.price}</span>
                     <i class="fas fa-star"></i>
                 </div>
-                <button class="btn-remove-item" data-id="${item.id}">
+                <button class="btn-remove-item" data-id="${item.id}" aria-label="Удалить товар">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -584,6 +672,13 @@ function setupCheckoutFunctionality() {
             hideCheckout();
         }
     });
+    
+    // Закрытие по клавише ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideCheckout();
+        }
+    });
 }
 
 function showCheckout() {
@@ -600,7 +695,7 @@ function showCheckout() {
     const instructionPrice = document.getElementById('instructionPrice');
     
     if (purchaseServer) purchaseServer.textContent = serverName;
-    if (purchaseProduct) purchaseProduct.textContent = products;
+    if (purchaseProduct) purchaseProduct.textContent = products.length > 50 ? products.substring(0, 47) + '...' : products;
     if (purchasePrice) purchasePrice.textContent = total;
     if (instructionPrice) instructionPrice.textContent = total;
     
@@ -610,6 +705,8 @@ function showCheckout() {
     if (purchaseModal) {
         purchaseModal.classList.add('show');
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
     }
 }
 
@@ -617,7 +714,9 @@ function hideCheckout() {
     const purchaseModal = document.getElementById('purchaseModal');
     if (purchaseModal) {
         purchaseModal.classList.remove('show');
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
     }
 }
 
@@ -626,18 +725,26 @@ function confirmPurchase() {
     const serverName = selectedServer === 'lite' ? 'Lite режим' : 'Crit режим';
     const products = cart.map(item => item.product).join(', ');
     
-    alert(`✅ ЗАКАЗ ОФОРМЛЕН!\n\n📋 Детали заказа:\n• Сервер: ${serverName}\n• Товары: ${products}\n• Сумма: ${total} звезд\n\n💳 Инструкция по оплате:\n1. Перейдите в Telegram бота @VolvetMC_Bot\n2. Оплатите ${total} звезд\n3. Пришлите скриншот оплаты в поддержку\n4. Сообщите ваш никнейм в игре\n\n⏱️ Товар будет активирован в течение 15 минут!`);
+    const message = `✅ ЗАКАЗ ОФОРМЛЕН!\n\n📋 Детали заказа:\n• Сервер: ${serverName}\n• Товары: ${products}\n• Сумма: ${total} звезд\n\n💳 Инструкция по оплате:\n1. Перейдите в Telegram бота @VolvetDon_bot\n2. Оплатите ${total} звезд\n3. Пришлите скриншот оплаты в поддержку\n4. Сообщите ваш никнейм в игре\n\n⏱️ Товар будет активирован в течение 15 минут!`;
     
-    // Очищаем корзину
-    cart = [];
-    updateCart();
-    saveToLocalStorage();
-    
-    // Закрываем окна
-    hideCheckout();
-    
-    // Показываем уведомление
-    showNotification('Заказ оформлен! Проверьте инструкцию по оплате.', 'success');
+    // Показываем сообщение
+    if (window.confirm(message)) {
+        // Очищаем корзину
+        cart = [];
+        updateCart();
+        saveToLocalStorage();
+        
+        // Закрываем окна
+        hideCheckout();
+        
+        // Показываем уведомление
+        showNotification('Заказ оформлен! Проверьте инструкцию по оплате.', 'success');
+        
+        // Возвращаем в магазин
+        setTimeout(() => {
+            showShop();
+        }, 1000);
+    }
 }
 
 // 6. Мобильное меню
@@ -678,26 +785,43 @@ function setupMobileMenu() {
             }
         });
     }
+    
+    // Закрытие по клавише ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeMobileMenu();
+        }
+    });
 }
 
 function showMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     if (mobileMenu) {
-        mobileMenu.style.display = 'block';
-        setTimeout(() => {
-            mobileMenu.style.opacity = '1';
+        mobileMenu.style.display = 'flex';
+        mobileMenu.style.transform = 'translateX(100%)';
+        
+        // Анимация
+        requestAnimationFrame(() => {
+            mobileMenu.classList.add('show');
             mobileMenu.style.transform = 'translateX(0)';
-        }, 10);
+        });
+        
+        document.body.style.overflow = 'hidden';
     }
 }
 
 function closeMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     if (mobileMenu) {
-        mobileMenu.style.opacity = '0';
+        mobileMenu.classList.remove('show');
         mobileMenu.style.transform = 'translateX(100%)';
+        
+        // Ждем окончания анимации
         setTimeout(() => {
-            mobileMenu.style.display = 'none';
+            if (!mobileMenu.classList.contains('show')) {
+                mobileMenu.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }, 300);
     }
 }
@@ -708,56 +832,7 @@ function showNotification(message, type = 'info') {
     const notificationText = document.getElementById('notificationText');
     
     if (!notification || !notificationText) {
-        // Создаем уведомление если его нет
-        const newNotification = document.createElement('div');
-        newNotification.id = 'notification';
-        newNotification.className = 'notification';
-        newNotification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas fa-check-circle"></i>
-                <span>${message}</span>
-            </div>
-        `;
-        
-        // Добавляем стили
-        newNotification.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: ${type === 'success' ? '#10b981' : 
-                         type === 'warning' ? '#f59e0b' : 
-                         type === 'error' ? '#ef4444' : '#3b82f6'};
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        `;
-        
-        document.body.appendChild(newNotification);
-        
-        // Показываем
-        setTimeout(() => {
-            newNotification.style.transform = 'translateY(0)';
-            newNotification.style.opacity = '1';
-        }, 10);
-        
-        // Убираем через 3 секунды
-        setTimeout(() => {
-            newNotification.style.transform = 'translateY(100px)';
-            newNotification.style.opacity = '0';
-            setTimeout(() => {
-                document.body.removeChild(newNotification);
-            }, 300);
-        }, 3000);
-        
+        createNotification(message, type);
         return;
     }
     
@@ -772,10 +847,71 @@ function showNotification(message, type = 'info') {
     };
     
     notification.style.background = colors[type] || colors.info;
+    
+    // Показываем уведомление
     notification.classList.add('show');
     
+    // Убираем через 3 секунды
     setTimeout(() => {
         notification.classList.remove('show');
+    }, 3000);
+}
+
+function createNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    const colors = {
+        success: '#10b981',
+        warning: '#f59e0b',
+        error: '#ef4444',
+        info: '#3b82f6'
+    };
+    
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: ${colors[type] || colors.info};
+        color: white;
+        padding: 14px 18px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 4000;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-size: 14px;
+        max-width: 320px;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Показываем
+    setTimeout(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    }, 10);
+    
+    // Убираем через 3 секунды
+    setTimeout(() => {
+        notification.style.transform = 'translateY(100px)';
+        notification.style.opacity = '0';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
     }, 3000);
 }
 
@@ -800,13 +936,10 @@ function loadFromLocalStorage() {
         if (savedServer && (savedServer === 'lite' || savedServer === 'crit')) {
             selectedServer = savedServer;
             
-            // Обновляем шапку
-            const currentServer = document.getElementById('currentServer');
-            const currentOnline = document.getElementById('currentOnline');
+            // Обновляем отображение сервера
+            const serverName = savedServer === 'lite' ? 'Lite режим' : 'Crit режим';
             const onlineData = serverOnline[savedServer];
-            
-            if (currentServer) currentServer.textContent = savedServer === 'lite' ? 'Lite режим' : 'Crit режим';
-            if (currentOnline) currentOnline.textContent = `Онлайн: ${onlineData.online}/${onlineData.max}`;
+            updateServerDisplay(serverName, onlineData);
         }
     } catch (e) {
         console.warn('Не удалось загрузить из localStorage:', e);
@@ -834,42 +967,38 @@ window.debug = {
     }
 };
 
-// Добавляем CSS для уведомлений
-const notificationStyle = document.createElement('style');
-notificationStyle.textContent = `
-    .notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--gradient-purple);
-        color: white;
-        padding: 15px 20px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: var(--shadow-card);
-        z-index: 9999;
-        transform: translateY(100px);
-        opacity: 0;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-    
-    .notification.show {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    
-    @keyframes slideIn {
-        from {
-            transform: translateY(100px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-`;
-document.head.appendChild(notificationStyle);
+// Fetch с таймаутом
+fetch.prototype.timeout = function(ms) {
+    return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+            reject(new Error('Request timeout'));
+        }, ms);
+        
+        this.then(resolve, reject).finally(() => clearTimeout(timeout));
+    });
+};
+
+// Полифил для requestAnimationFrame
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = window.webkitRequestAnimationFrame || 
+                                  window.mozRequestAnimationFrame || 
+                                  function(callback) {
+                                      return window.setTimeout(callback, 1000 / 60);
+                                  };
+}
+
+// Полифил для matches
+if (!Element.prototype.matches) {
+    Element.prototype.matches = 
+        Element.prototype.matchesSelector || 
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector || 
+        Element.prototype.oMatchesSelector || 
+        Element.prototype.webkitMatchesSelector ||
+        function(s) {
+            var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                i = matches.length;
+            while (--i >= 0 && matches.item(i) !== this) {}
+            return i > -1;
+        };
+}
