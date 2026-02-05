@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Шапка сайта -->
@@ -70,7 +71,7 @@
         </div>
         
         <nav class="mobile-nav">
-            <button class="mobile-nav-btn active" data-category="privileges">
+            <button class="mobile-nav-btn" data-category="privileges">
                 <i class="fas fa-crown"></i>
                 <span>Привилегии</span>
             </button>
@@ -110,15 +111,14 @@
                     <h3>LITE РЕЖИМ</h3>
                     <div class="online-display">
                         <i class="fas fa-signal"></i>
-                        <span id="liteOnline">0/500</span>
+                        <span id="liteOnline">0/25</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%"></div>
+                        <div class="progress-fill" style="width: 49.4%"></div>
                     </div>
                     <div class="server-features">
                         <p><i class="fas fa-check-circle"></i> Заклик PvP</p>
                         <p><i class="fas fa-check-circle"></i> Упрощенная экономика</p>
-                        <p><i class="fas fa-check-circle"></i> Для новичков</p>
                     </div>
                     <button class="btn-select-server" data-server="lite">
                         Выбрать <i class="fas fa-arrow-right"></i>
@@ -133,66 +133,18 @@
                     <h3>CRIT РЕЖИМ</h3>
                     <div class="online-display">
                         <i class="fas fa-signal"></i>
-                        <span id="critOnline">0/300</span>
+                        <span id="critOnline">0/20</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%"></div>
+                        <div class="progress-fill" style="width: 42.7%"></div>
                     </div>
                     <div class="server-features">
                         <p><i class="fas fa-check-circle"></i> Джава PvP</p>
                         <p><i class="fas fa-check-circle"></i> Усиленная сложность</p>
-                        <p><i class="fas fa-check-circle"></i> Для опытных игроков</p>
                     </div>
                     <button class="btn-select-server" data-server="crit">
                         Выбрать <i class="fas fa-arrow-right"></i>
                     </button>
-                </div>
-            </div>
-            
-            <!-- Информация о сайте (ВЫШЕ МАГАЗИНА) -->
-            <div class="site-info-section">
-                <div class="site-info-card">
-                    <div class="info-icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div class="info-content">
-                        <h4>О нашем магазине</h4>
-                        <p>VolvetMC - это уникальный Minecraft сервер с двумя режимами игры. У нас вы можете приобрести привилегии, игровую валюту и другие товары для улучшения своего игрового опыта.</p>
-                    </div>
-                </div>
-                
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h5>Безопасность</h5>
-                        <p>Все покупки защищены и гарантированы</p>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h5>Быстрая выдача</h5>
-                        <p>Товары выдаются в течение 15 минут</p>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                        <h5>Поддержка 24/7</h5>
-                        <p>Всегда готовы помочь с покупкой</p>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-gift"></i>
-                        </div>
-                        <h5>Бонусы</h5>
-                        <p>Скидки и бонусы постоянным клиентам</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -549,49 +501,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Фиксированная информация о сайте (НИЖЕ ТОВАРОВ) -->
-            <div class="fixed-site-info">
-                <div class="info-block">
-                    <div class="info-icon-large">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
-                    <h4>Как купить?</h4>
-                    <ol class="purchase-steps">
-                        <li>Выберите сервер и товар</li>
-                        <li>Добавьте товар в корзину</li>
-                        <li>Перейдите в корзину и оформите заказ</li>
-                        <li>Оплатите заказ через Telegram бота</li>
-                        <li>Получите товар в игре в течение 15 минут</li>
-                    </ol>
-                </div>
-                
-                <div class="info-block">
-                    <div class="info-icon-large">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h4>Гарантии</h4>
-                    <ul class="guarantee-list">
-                        <li><i class="fas fa-check"></i> 100% гарантия выдачи товара</li>
-                        <li><i class="fas fa-check"></i> Возврат средств при проблемах</li>
-                        <li><i class="fas fa-check"></i> Конфиденциальность данных</li>
-                        <li><i class="fas fa-check"></i> Поддержка 24/7</li>
-                    </ul>
-                </div>
-                
-                <div class="info-block">
-                    <div class="info-icon-large">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h4>Поддержка</h4>
-                    <div class="support-info">
-                        <p><strong>Telegram бот:</strong> @VolvetDon_bot</p>
-                        <p><strong>Техподдержка:</strong> @VolvetMC_Support</p>
-                        <p><strong>Группа ВК:</strong> vk.com/volvetmc</p>
-                        <p><strong>Email:</strong> support@volvetmc.ru</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -601,22 +510,15 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <h3><i class="fas fa-crown"></i> VolvetMC</h3>
-                    <p>Лучший Minecraft сервер с 2023 года</p>
+                    <p>Сервер Minecraft:BE</p>
                 </div>
                 <div class="footer-links">
-                    <a href="#" class="footer-link"><i class="fas fa-book"></i> Правила</a>
-                    <a href="#" class="footer-link"><i class="fas fa-headset"></i> Поддержка</a>
-                    <a href="#" class="footer-link"><i class="fab fa-telegram"></i> Telegram</a>
-                    <a href="#" class="footer-link"><i class="fab fa-vk"></i> ВКонтакте</a>
+                    <a href="#"><i class="fas fa-book"></i> Правила</a>
+                    <a href="#"><i class="fas fa-headset"></i> Поддержка</a>
+                    <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
                 </div>
                 <div class="footer-info">
-                    <p class="warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Все покупки защищены. Для оплаты используйте Telegram бота @VolvetDon_bot
-                    </p>
-                    <p class="copyright">
-                        © 2023-2024 VolvetMC. Все права защищены.
-                    </p>
+                    <p class="warning">Telegram бот : @VolvetDon_bot</p>
                 </div>
             </div>
         </div>
