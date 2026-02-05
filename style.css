@@ -1,1375 +1,752 @@
-/* CSS переменные для фиолетовой темы */
-:root {
-    --primary-bg: #0f0b1a;
-    --secondary-bg: #1a1525;
-    --accent-1: #7c3aed;
-    --accent-2: #a855f7;
-    --accent-3: #c084fc;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --gradient-purple: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
-    --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
-    --gradient-red: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #ec4899 100%);
-    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.3);
-    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --transition: all 0.3s ease;
-    --border-radius: 12px;
-}
-
-/* Сброс и базовые стили */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-size: 16px;
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--primary-bg);
-    color: var(--text-primary);
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    width: 100%;
-}
-
-/* Шапка сайта */
-.header {
-    background: rgba(26, 21, 37, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 15px 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(124, 58, 237, 0.2);
-}
-
-.header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-}
-
-.logo h1 {
-    background: var(--gradient-purple);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-size: 24px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-}
-
-.logo i {
-    color: var(--accent-2);
-}
-
-/* Десктоп навигация */
-.desktop-nav {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.server-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.selected-server, .online-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 15px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(124, 58, 237, 0.3);
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.selected-server i, .online-status i {
-    color: var(--accent-2);
-}
-
-.btn-change-server {
-    background: var(--gradient-purple);
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-.btn-change-server:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-}
-
-.cart-icon {
-    position: relative;
-    font-size: 22px;
-    color: var(--accent-2);
-    cursor: pointer;
-    transition: var(--transition);
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--border-radius);
-    background: rgba(124, 58, 237, 0.1);
-}
-
-.cart-icon:hover {
-    background: rgba(124, 58, 237, 0.2);
-    transform: scale(1.05);
-}
-
-.cart-count {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: #ef4444;
-    color: white;
-    font-size: 12px;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    padding: 0 4px;
-}
-
-/* Мобильное меню кнопка */
-.mobile-menu-btn {
-    display: none;
-    background: rgba(124, 58, 237, 0.1);
-    border: 1px solid rgba(124, 58, 237, 0.3);
-    color: var(--accent-2);
-    font-size: 22px;
-    cursor: pointer;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.mobile-cart-count {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: #ef4444;
-    color: white;
-    font-size: 12px;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    padding: 0 4px;
-}
-
-/* Мобильное меню */
-.mobile-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 300px;
-    background: var(--secondary-bg);
-    z-index: 2000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid rgba(124, 58, 237, 0.2);
-}
-
-.mobile-menu.show {
-    transform: translateX(0);
-}
-
-.mobile-menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.mobile-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--accent-2);
-}
-
-.mobile-logo i {
-    font-size: 22px;
-}
-
-.mobile-menu-close {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 24px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    transition: var(--transition);
-}
-
-.mobile-menu-close:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.mobile-server-info {
-    padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.mobile-server-selected {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.mobile-server-selected i {
-    color: var(--accent-2);
-    font-size: 20px;
-}
-
-.mobile-server-label {
-    display: block;
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 4px;
-}
-
-.mobile-online-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-secondary);
-    font-size: 14px;
-}
-
-.mobile-online-status i {
-    color: var(--accent-2);
-}
-
-.mobile-nav {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-.mobile-nav-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: var(--text-secondary);
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    margin-bottom: 10px;
-    text-align: left;
-}
-
-.mobile-nav-btn i {
-    font-size: 20px;
-    color: var(--accent-2);
-    width: 24px;
-}
-
-.mobile-nav-btn:hover,
-.mobile-nav-btn.active {
-    background: rgba(124, 58, 237, 0.1);
-    border-color: var(--accent-2);
-    color: var(--text-primary);
-}
-
-.mobile-nav-cart-count {
-    margin-left: auto;
-    background: var(--accent-2);
-    color: white;
-    font-size: 14px;
-    min-width: 24px;
-    height: 24px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-/* Главный экран - Выбор сервера */
-.server-selection {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 100px 0 40px;
-}
-
-.selection-title {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.selection-title h2 {
-    font-size: 36px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
-
-.selection-title p {
-    color: var(--text-secondary);
-    font-size: 18px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.server-cards {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    margin-bottom: 60px;
-}
-
-.server-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 30px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-}
-
-.server-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    border-radius: 20px 20px 0 0;
-}
-
-.lite-mode::before {
-    background: var(--gradient-blue);
-}
-
-.crit-mode::before {
-    background: var(--gradient-red);
-}
-
-.server-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-card);
-}
-
-.server-icon {
-    font-size: 50px;
-    margin-bottom: 20px;
-}
-
-.lite-mode .server-icon {
-    color: #3b82f6;
-}
-
-.crit-mode .server-icon {
-    color: #ef4444;
-}
-
-.server-card h3 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-.online-display {
-    font-size: 22px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.online-display i {
-    color: #10b981;
-}
-
-.progress-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    margin: 15px 0;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.5s ease;
-}
-
-.lite-mode .progress-fill {
-    background: var(--gradient-blue);
-}
-
-.crit-mode .progress-fill {
-    background: var(--gradient-red);
-}
-
-.server-features {
-    text-align: left;
-    margin: 25px 0;
-}
-
-.server-features p {
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-secondary);
-    font-size: 15px;
-}
-
-.server-features i {
-    color: #10b981;
-}
-
-.btn-select-server {
-    background: var(--gradient-purple);
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    border-radius: var(--border-radius);
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.btn-select-server:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-}
-
-.lite-mode .btn-select-server {
-    background: var(--gradient-blue);
-}
-
-.crit-mode .btn-select-server {
-    background: var(--gradient-red);
-}
-
-/* Информация о сайте на главной */
-.site-info-section {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 20px;
-    padding: 40px;
-    margin-top: 40px;
-    border: 1px solid rgba(124, 58, 237, 0.1);
-}
-
-.site-info-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.info-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    color: var(--accent-2);
-    flex-shrink: 0;
-}
-
-.info-content h4 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: var(--text-primary);
-}
-
-.info-content p {
-    color: var(--text-secondary);
-    font-size: 16px;
-    line-height: 1.7;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 25px;
-}
-
-.feature-item {
-    text-align: center;
-    padding: 25px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: var(--transition);
-}
-
-.feature-item:hover {
-    border-color: var(--accent-2);
-    transform: translateY(-5px);
-}
-
-.feature-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    color: var(--accent-2);
-    margin: 0 auto 20px;
-}
-
-.feature-item h5 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: var(--text-primary);
-}
-
-.feature-item p {
-    color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* Магазин */
-.shop {
-    display: none;
-    padding: 100px 0 40px;
-}
-
-.shop.active {
-    display: block;
-}
-
-.shop-nav {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 40px;
-    background: rgba(26, 21, 37, 0.8);
-    padding: 15px;
-    border-radius: var(--border-radius);
-    flex-wrap: wrap;
-}
-
-.nav-btn {
-    background: rgba(124, 58, 237, 0.1);
-    color: var(--text-secondary);
-    border: 2px solid transparent;
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nav-btn:hover {
-    background: rgba(124, 58, 237, 0.2);
-    color: var(--text-primary);
-}
-
-.nav-btn.active {
-    background: var(--gradient-purple);
-    color: white;
-    border-color: var(--accent-2);
-}
-
-.category-content {
-    display: none;
-}
-
-.category-content.active {
-    display: block;
-}
-
-.category-title {
-    font-size: 28px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Карточки товаров */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    margin-bottom: 60px;
-}
-
-.product-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 18px;
-    padding: 25px;
-    transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-2);
-}
-
-.product-card.popular {
-    border: 2px solid var(--accent-2);
-}
-
-.product-card.vip {
-    border: 2px solid #fbbf24;
-}
-
-.product-badge {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    background: var(--gradient-purple);
-    color: white;
-    padding: 6px 16px;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: 600;
-    z-index: 1;
-}
-
-.popular .product-badge {
-    background: var(--accent-2);
-}
-
-.vip .product-badge {
-    background: #fbbf24;
-}
-
-.product-card h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    line-height: 1.3;
-}
-
-.product-price {
-    font-size: 20px;
-    color: #fbbf24;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-}
-
-.product-features {
-    list-style: none;
-    margin-bottom: 25px;
-    flex: 1;
-}
-
-.product-features li {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 15px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-.product-features i {
-    color: var(--accent-2);
-    width: 18px;
-    font-size: 14px;
-    margin-top: 2px;
-    flex-shrink: 0;
-}
-
-.product-features code {
-    background: rgba(124, 58, 237, 0.1);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-family: 'Monaco', 'Consolas', monospace;
-    font-size: 13px;
-    color: var(--accent-2);
-}
-
-.btn-buy {
-    background: var(--gradient-purple);
-    color: white;
-    border: none;
-    padding: 16px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: auto;
-}
-
-.btn-buy:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-}
-
-/* Карточки наборов */
-.kit-card {
-    border: 2px solid rgba(124, 58, 237, 0.3);
-}
-
-.kit-card .product-features li i {
-    color: #10b981;
-}
-
-/* Фиксированная информация о сайте в магазине */
-.fixed-site-info {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 20px;
-    padding: 40px;
-    margin-top: 40px;
-    border: 1px solid rgba(124, 58, 237, 0.1);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.info-block {
-    text-align: center;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.info-icon-large {
-    width: 70px;
-    height: 70px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    color: var(--accent-2);
-    margin: 0 auto 20px;
-}
-
-.info-block h4 {
-    font-size: 22px;
-    margin-bottom: 20px;
-    color: var(--text-primary);
-}
-
-.purchase-steps {
-    list-style: none;
-    text-align: left;
-    counter-reset: step-counter;
-}
-
-.purchase-steps li {
-    margin-bottom: 15px;
-    padding-left: 40px;
-    position: relative;
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
-
-.purchase-steps li:before {
-    counter-increment: step-counter;
-    content: counter(step-counter);
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 30px;
-    height: 30px;
-    background: var(--gradient-purple);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.guarantee-list {
-    list-style: none;
-    text-align: left;
-}
-
-.guarantee-list li {
-    margin-bottom: 15px;
-    padding-left: 35px;
-    position: relative;
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
-
-.guarantee-list li:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 5px;
-    width: 20px;
-    height: 20px;
-    background: rgba(16, 185, 129, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.guarantee-list li i {
-    color: #10b981;
-    font-size: 12px;
-}
-
-.support-info p {
-    margin-bottom: 10px;
-    color: var(--text-secondary);
-    text-align: left;
-    padding-left: 20px;
-}
-
-.support-info strong {
-    color: var(--text-primary);
-    display: inline-block;
-    min-width: 120px;
-}
-
-/* Футер */
-.footer {
-    background: rgba(26, 21, 37, 0.95);
-    padding: 50px 0 30px;
-    margin-top: 60px;
-    border-top: 1px solid rgba(124, 58, 237, 0.2);
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.footer-logo h3 {
-    background: var(--gradient-purple);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-size: 26px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.footer-logo p {
-    color: var(--text-secondary);
-    font-size: 15px;
-}
-
-.footer-links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.footer-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    transition: var(--transition);
-}
-
-.footer-link:hover {
-    color: var(--accent-2);
-    transform: translateX(5px);
-}
-
-.footer-info {
-    max-width: 400px;
-}
-
-.warning {
-    background: rgba(251, 191, 36, 0.1);
-    border: 1px solid rgba(251, 191, 36, 0.2);
-    color: #fbbf24;
-    padding: 15px 20px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.warning i {
-    margin-right: 10px;
-    font-size: 18px;
-}
-
-.copyright {
-    color: var(--text-secondary);
-    font-size: 14px;
-    opacity: 0.8;
-}
-
-/* Корзина и оформление заказа (стили остаются прежними) */
-/* ... все стили для корзины из предыдущего ответа ... */
-
-/* Анимации */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-/* Адаптивность */
-
-/* Планшеты (от 768px до 1024px) */
-@media (max-width: 1024px) {
-    .container {
-        max-width: 95%;
-        padding: 0 15px;
-    }
-    
-    .server-cards {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .server-card {
-        width: 100%;
-        max-width: 500px;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-    }
-    
-    .fixed-site-info {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-    }
-}
-
-/* Большие мобильные (от 480px до 767px) */
-@media (max-width: 767px) {
-    .header .container {
-        flex-wrap: wrap;
-    }
-    
-    .logo h1 {
-        font-size: 20px;
-    }
-    
-    .desktop-nav {
-        display: none;
-    }
-    
-    .mobile-menu-btn {
-        display: flex;
-    }
-    
-    .server-selection {
-        padding-top: 90px;
-        padding-bottom: 30px;
-    }
-    
-    .selection-title h2 {
-        font-size: 28px;
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .selection-title p {
-        font-size: 16px;
-    }
-    
-    .server-card {
-        padding: 25px;
-    }
-    
-    .server-card h3 {
-        font-size: 24px;
-    }
-    
-    .server-icon {
-        font-size: 40px;
-    }
-    
-    .site-info-card {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .info-icon {
-        margin: 0 auto;
-    }
-    
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .shop-nav {
-        overflow-x: auto;
-        padding: 10px;
-        justify-content: flex-start;
-        gap: 8px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-    
-    .shop-nav::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .nav-btn {
-        font-size: 14px;
-        padding: 10px 16px;
-        white-space: nowrap;
-    }
-    
-    .category-title {
-        font-size: 24px;
-    }
-    
-    .products-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .product-card {
-        padding: 20px;
-    }
-    
-    .product-card h3 {
-        font-size: 20px;
-    }
-    
-    .fixed-site-info {
-        grid-template-columns: 1fr;
-        padding: 30px 20px;
-    }
-    
-    .info-block {
-        padding: 25px;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 30px;
-    }
-    
-    .footer-links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-    }
-    
-    .footer-link {
-        justify-content: center;
-    }
-    
-    .warning {
-        font-size: 14px;
-        padding: 12px 16px;
-        text-align: center;
-    }
-}
-
-/* Маленькие мобильные (до 480px) */
-@media (max-width: 480px) {
-    .container {
-        padding: 0 12px;
-    }
-    
-    .logo h1 {
-        font-size: 18px;
-    }
-    
-    .mobile-menu {
-        width: 280px;
-    }
-    
-    .server-selection {
-        padding-top: 80px;
-    }
-    
-    .selection-title h2 {
-        font-size: 24px;
-    }
-    
-    .selection-title p {
-        font-size: 15px;
-    }
-    
-    .server-card {
-        padding: 20px;
-    }
-    
-    .server-card h3 {
-        font-size: 22px;
-    }
-    
-    .online-display {
-        font-size: 20px;
-    }
-    
-    .server-features p {
-        font-size: 14px;
-    }
-    
-    .btn-select-server {
-        padding: 14px 30px;
-        font-size: 16px;
-    }
-    
-    .site-info-section {
-        padding: 30px 20px;
-    }
-    
-    .info-content h4 {
-        font-size: 20px;
-    }
-    
-    .info-content p {
-        font-size: 15px;
-    }
-    
-    .feature-item {
-        padding: 20px 15px;
-    }
-    
-    .nav-btn {
-        font-size: 13px;
-        padding: 8px 14px;
-    }
-    
-    .category-title {
-        font-size: 22px;
-    }
-    
-    .product-card h3 {
-        font-size: 18px;
-    }
-    
-    .product-price {
-        font-size: 18px;
-    }
-    
-    .product-features li {
-        font-size: 14px;
-    }
-    
-    .btn-buy {
-        font-size: 15px;
-        padding: 14px;
-    }
-    
-    .info-block h4 {
-        font-size: 20px;
-    }
-    
-    .footer-logo h3 {
-        font-size: 22px;
-    }
-    
-    .warning {
-        font-size: 13px;
-        padding: 10px 14px;
-    }
-}
-
-/* Очень маленькие экраны (до 360px) */
-@media (max-width: 360px) {
-    .logo h1 {
-        font-size: 16px;
-    }
-    
-    .mobile-menu {
-        width: 260px;
-    }
-    
-    .selection-title h2 {
-        font-size: 22px;
-    }
-    
-    .server-card h3 {
-        font-size: 20px;
-    }
-    
-    .server-features p {
-        font-size: 13px;
-    }
-    
-    .nav-btn {
-        font-size: 12px;
-        padding: 8px 12px;
-    }
-    
-    .product-card h3 {
-        font-size: 17px;
-    }
-    
-    .product-features li {
-        font-size: 13px;
-    }
-}
-
-/* Ландшафтная ориентация на мобильных */
-@media (max-height: 600px) and (orientation: landscape) {
-    .server-selection {
-        min-height: auto;
-        padding-top: 80px;
-        padding-bottom: 30px;
-    }
-    
-    .server-cards {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    
-    .server-card {
-        width: calc(50% - 15px);
-        min-width: 280px;
-    }
-}
-
-/* Портретная ориентация на планшетах */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .server-cards {
-        flex-direction: row;
-        gap: 20px;
-    }
-    
-    .server-card {
-        width: calc(50% - 10px);
-    }
-}
-
-/* Высокие экраны */
-@media (min-height: 900px) {
-    .server-selection {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VolvetMC | Магазин доната</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-crown"></i> VolvetMC</h1>
+            </div>
+            
+            <div class="desktop-nav">
+                <div class="server-info">
+                    <div class="selected-server">
+                        <i class="fas fa-server"></i>
+                        <span id="currentServer">Выберите сервер</span>
+                    </div>
+                    <div class="online-status">
+                        <i class="fas fa-users"></i>
+                        <span id="currentOnline">Онлайн: -/-</span>
+                    </div>
+                    <button class="btn-change-server" id="changeServerBtn">
+                        <i class="fas fa-exchange-alt"></i> Сменить
+                    </button>
+                </div>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+                <span class="mobile-cart-count" id="mobileCartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Мобильное меню -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <div class="mobile-logo">
+                <i class="fas fa-crown"></i>
+                <span>VolvetMC</span>
+            </div>
+            <button class="mobile-menu-close" id="mobileMenuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="mobile-server-info">
+            <div class="mobile-server-selected">
+                <i class="fas fa-server"></i>
+                <div>
+                    <span class="mobile-server-label">Сервер:</span>
+                    <span id="mobileCurrentServer">Не выбран</span>
+                </div>
+            </div>
+            <div class="mobile-online-status">
+                <i class="fas fa-users"></i>
+                <span id="mobileCurrentOnline">Онлайн: -/-</span>
+            </div>
+        </div>
+        
+        <nav class="mobile-nav">
+            <button class="mobile-nav-btn" data-category="privileges">
+                <i class="fas fa-crown"></i>
+                <span>Привилегии</span>
+            </button>
+            <button class="mobile-nav-btn" data-category="other">
+                <i class="fas fa-gift"></i>
+                <span>Разное</span>
+            </button>
+            <button class="mobile-nav-btn" data-category="kits">
+                <i class="fas fa-box"></i>
+                <span>Наборы</span>
+            </button>
+            <button class="mobile-nav-btn" id="mobileChangeServer">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Сменить сервер</span>
+            </button>
+            <button class="mobile-nav-btn" id="mobileCartBtn">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Корзина</span>
+                <span class="mobile-nav-cart-count" id="mobileNavCartCount">0</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Главный экран - Выбор сервера -->
+    <section class="server-selection active" id="serverSelection">
+        <div class="container">
+            <div class="selection-title">
+                <h2><i class="fas fa-gamepad"></i> Выберите режим игры</h2>
+                <p>Выберите сервер для продолжения покупок</p>
+            </div>
+            <div class="server-cards">
+                <!-- Lite режим -->
+                <div class="server-card lite-mode">
+                    <div class="server-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>LITE РЕЖИМ</h3>
+                    <div class="online-display">
+                        <i class="fas fa-signal"></i>
+                        <span id="liteOnline">0/25</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 49.4%"></div>
+                    </div>
+                    <div class="server-features">
+                        <p><i class="fas fa-check-circle"></i> Заклик PvP</p>
+                        <p><i class="fas fa-check-circle"></i> Упрощенная экономика</p>
+                    </div>
+                    <button class="btn-select-server" data-server="lite">
+                        Выбрать <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Crit режим -->
+                <div class="server-card crit-mode">
+                    <div class="server-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>CRIT РЕЖИМ</h3>
+                    <div class="online-display">
+                        <i class="fas fa-signal"></i>
+                        <span id="critOnline">0/20</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 42.7%"></div>
+                    </div>
+                    <div class="server-features">
+                        <p><i class="fas fa-check-circle"></i> Джава PvP</p>
+                        <p><i class="fas fa-check-circle"></i> Усиленная сложность</p>
+                    </div>
+                    <button class="btn-select-server" data-server="crit">
+                        Выбрать <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Магазин -->
+    <section class="shop" id="shopSection">
+        <div class="container">
+            <!-- Навигация -->
+            <nav class="shop-nav">
+                <button class="nav-btn active" data-category="privileges">
+                    <i class="fas fa-crown"></i> Привилегии
+                </button>
+                <button class="nav-btn" data-category="other">
+                    <i class="fas fa-gift"></i> Разное
+                </button>
+                <button class="nav-btn" data-category="kits">
+                    <i class="fas fa-box"></i> Наборы
+                </button>
+            </nav>
+
+            <!-- Контент магазина -->
+            <div class="shop-content">
+                <!-- Привилегии -->
+                <div class="category-content active" id="privileges">
+                    <h2 class="category-title"><i class="fas fa-crown"></i> Привилегии</h2>
+                    <div class="products-grid">
+                        <!-- Начинающий -->
+                        <div class="product-card">
+                            <div class="product-badge">НОВЫЙ</div>
+                            <h3>★ НАЧИНАЮЩИЙ</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 4 звезды
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-lock"></i> Приватов: <strong>3</strong></li>
+                                <li><i class="fas fa-home"></i> Точек дома: <strong>4</strong></li>
+                                <li><i class="fas fa-shopping-cart"></i> Слотов на аукционе: <strong>6</strong></li>
+                                <li><i class="fas fa-terminal"></i> Команда <code>-clear</code></li>
+                                <li><i class="fas fa-box"></i> Свой кит</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Начинающий" data-price="4">
+                                <i class="fas fa-shopping-cart"></i> Купить за 4⭐
+                            </button>
+                        </div>
+
+                        <!-- Премиум -->
+                        <div class="product-card popular">
+                            <div class="product-badge">ПОПУЛЯРНО</div>
+                            <h3>★ ПРЕМИУМ</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 10 звезд <i class="fas fa-fire"></i>
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-lock"></i> Приватов: <strong>4</strong></li>
+                                <li><i class="fas fa-home"></i> Точек дома: <strong>5</strong></li>
+                                <li><i class="fas fa-shopping-cart"></i> Слотов на аукционе: <strong>7</strong></li>
+                                <li><i class="fas fa-terminal"></i> Команды: <code>-clear</code>, <code>-feed</code>, <code>-unenchant</code></li>
+                                <li><i class="fas fa-box"></i> Свой кит</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Премиум" data-price="10">
+                                <i class="fas fa-shopping-cart"></i> Купить за 10⭐
+                            </button>
+                        </div>
+
+                        <!-- Спонсор -->
+                        <div class="product-card">
+                            <h3>★ СПОНСОР</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 20 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-lock"></i> Приватов: <strong>6</strong></li>
+                                <li><i class="fas fa-home"></i> Точек дома: <strong>6</strong></li>
+                                <li><i class="fas fa-shopping-cart"></i> Слотов на аукционе: <strong>8</strong></li>
+                                <li><i class="fas fa-terminal"></i> Все предыдущие + <code>-fix</code></li>
+                                <li><i class="fas fa-box"></i> Свой кит</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Спонсор" data-price="20">
+                                <i class="fas fa-shopping-cart"></i> Купить за 20⭐
+                            </button>
+                        </div>
+
+                        <!-- Квантум -->
+                        <div class="product-card">
+                            <h3>★ КВАНТУМ</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 30 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-lock"></i> Приватов: <strong>8</strong></li>
+                                <li><i class="fas fa-home"></i> Точек дома: <strong>7</strong></li>
+                                <li><i class="fas fa-shopping-cart"></i> Слотов на аукционе: <strong>9</strong></li>
+                                <li><i class="fas fa-terminal"></i> Все предыдущие + <code>-heal</code>, <code>-back</code>, <code>-fixall</code></li>
+                                <li><i class="fas fa-box"></i> Свой кит</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Квантум" data-price="30">
+                                <i class="fas fa-shopping-cart"></i> Купить за 30⭐
+                            </button>
+                        </div>
+
+                        <!-- Фамоус -->
+                        <div class="product-card vip">
+                            <div class="product-badge">ВЫГОДНО</div>
+                            <h3>★ ФАМОУС</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i> 50 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-lock"></i> Приватов: <strong>10</strong></li>
+                                <li><i class="fas fa-home"></i> Точек дома: <strong>8</strong></li>
+                                <li><i class="fas fa-shopping-cart"></i> Слотов на аукционе: <strong>10</strong></li>
+                                <li><i class="fas fa-terminal"></i> Все предыдущие + <code>-near</code>, <code>-fly</code></li>
+                                <li><i class="fas fa-box"></i> Свой кит</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Фамоус" data-price="50">
+                                <i class="fas fa-shopping-cart"></i> Купить за 50⭐
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Разное -->
+                <div class="category-content" id="other">
+                    <h2 class="category-title"><i class="fas fa-gift"></i> Разное</h2>
+                    <div class="products-grid">
+                        <!-- 3 дня кита -->
+                        <div class="product-card">
+                            <h3><i class="fas fa-calendar-day"></i> 3 Донат-Кейса</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 15 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-sync-alt"></i> 3 Донат-Кейса</li>
+                                <li><i class="fas fa-clock"></i> Донат с дк на 2 недели</li>
+                                <li><i class="fas fa-gem"></i> Вариант для теста привелегий</li>
+                            </ul>
+                            <button class="btn-buy" data-product="3 дня кита" data-price="15">
+                                <i class="fas fa-shopping-cart"></i> Купить за 15⭐
+                            </button>
+                        </div>
+
+                        <!-- Титул из списка -->
+                        <div class="product-card">
+                            <h3><i class="fas fa-medal"></i> ТИТУЛ КЕЙС</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 2 звезды
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-list"></i> Большой список</li>
+                                <li><i class="fas fa-palette"></i> Разные цвета и стили</li>
+                                <li><i class="fas fa-infinity"></i> Действует навсегда</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Титул из списка" data-price="2">
+                                <i class="fas fa-shopping-cart"></i> Купить за 2⭐
+                            </button>
+                        </div>
+
+                        <!-- Кастом титул -->
+                        <div class="product-card popular">
+                            <div class="product-badge">ПОПУЛЯРНО</div>
+                            <h3><i class="fas fa-edit"></i> КАСТОМ ТИТУЛ</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 7 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-font"></i> Свой уникальный текст</li>
+                                <li><i class="fas fa-palette"></i> Выбор цвета и формата</li>
+                                <li><i class="fas fa-infinity"></i> Действует навсегда</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Кастом титул" data-price="7">
+                                <i class="fas fa-shopping-cart"></i> Купить за 7⭐
+                            </button>
+                        </div>
+
+                        <!-- Размут -->
+                        <div class="product-card">
+                            <h3><i class="fas fa-volume-up"></i> РАЗМУТ</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 5 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-comment"></i> Снятие мута с чата</li>
+                                <li><i class="fas fa-shield-alt"></i> Гарантия от админа</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Размут" data-price="5">
+                                <i class="fas fa-shopping-cart"></i> Купить за 5⭐
+                            </button>
+                        </div>
+
+                        <!-- Разбан -->
+                        <div class="product-card vip">
+                            <div class="product-badge">VIP</div>
+                            <h3><i class="fas fa-unlock"></i> РАЗБАН</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 75 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-user-check"></i> Разблокировка аккаунта</li>
+                                <li><i class="fas fa-history"></i> Очистка истории нарушений</li>
+                                <li><i class="fas fa-infinity"></i> Возврат в игру до следующего нарушения</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Разбан" data-price="75">
+                                <i class="fas fa-shopping-cart"></i> Купить за 75⭐
+                            </button>
+                        </div>
+
+                        <!-- 500 LC -->
+                        <div class="product-card">
+                            <h3><i class="fas fa-gem"></i> 500 Вольв</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 5 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-coins"></i> Игровая валюта</li>
+                                <li><i class="fas fa-store"></i> Покупки в игровом магазине</li>
+                                <li><i class="fas fa-bolt"></i> Быстрое пополнение</li>
+                            </ul>
+                            <button class="btn-buy" data-product="500 LC" data-price="5">
+                                <i class="fas fa-shopping-cart"></i> Купить за 5⭐
+                            </button>
+                        </div>
+
+                        <!-- 1.000 LC -->
+                        <div class="product-card">
+                            <h3><i class="fas fa-gem"></i> 1.000 Вольв</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 10 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-coins"></i> Игровая валюта</li>
+                                <li><i class="fas fa-store"></i> Покупки в игровом магазине</li>
+                                <li><i class="fas fa-percentage"></i> Лучшее предложение</li>
+                            </ul>
+                            <button class="btn-buy" data-product="1000 LC" data-price="10">
+                                <i class="fas fa-shopping-cart"></i> Купить за 10⭐
+                            </button>
+                        </div>
+
+                        <!-- 2.500 LC -->
+                        <div class="product-card popular">
+                            <div class="product-badge">ВЫГОДА</div>
+                            <h3><i class="fas fa-gem"></i> 2.500 Вольв</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 25 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-coins"></i> Игровая валюта</li>
+                                <li><i class="fas fa-gift"></i> +5% бонусных Вольв</li>
+                                <li><i class="fas fa-bolt"></i> Быстрое пополнение</li>
+                            </ul>
+                            <button class="btn-buy" data-product="2500 LC" data-price="25">
+                                <i class="fas fa-shopping-cart"></i> Купить за 25⭐
+                            </button>
+                        </div>
+
+                        <!-- 5.000 LC -->
+                        <div class="product-card">
+                            <h3><i class="fas fa-gem"></i> 5.000 Вольв</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 50 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-coins"></i> Игровая валюта</li>
+                                <li><i class="fas fa-gift"></i> +10% бонусных Вольв</li>
+                                <li><i class="fas fa-bolt"></i> Быстрое пополнение</li>
+                            </ul>
+                            <button class="btn-buy" data-product="5000 LC" data-price="50">
+                                <i class="fas fa-shopping-cart"></i> Купить за 50⭐
+                            </button>
+                        </div>
+
+                        <!-- 10.000 LC -->
+                        <div class="product-card vip">
+                            <div class="product-badge">MAX</div>
+                            <h3><i class="fas fa-gem"></i> 10.000 Вольв</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 75 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-coins"></i> Игровая валюта</li>
+                                <li><i class="fas fa-gift"></i> +15% бонусных Вольв</li>
+                                <li><i class="fas fa-crown"></i> Максимальный пакет</li>
+                            </ul>
+                            <button class="btn-buy" data-product="10000 LC" data-price="75">
+                                <i class="fas fa-shopping-cart"></i> Купить за 75⭐
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Наборы -->
+                <div class="category-content" id="kits">
+                    <h2 class="category-title"><i class="fas fa-box"></i> Наборы</h2>
+                    <div class="products-grid">
+                        <!-- Старт набор -->
+                        <div class="product-card kit-card">
+                            <div class="product-badge">ЭКОНОМ</div>
+                            <h3><i class="fas fa-backpack"></i> СТАРТ НАБОР</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 20 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-crown"></i> Премиум (1 месяц)</li>
+                                <li><i class="fas fa-gem"></i> 500 Вольв</li>
+                                <li><i class="fas fa-medal"></i> Титул-Кейс</li>
+                                <li><i class="fas fa-coins"></i> 500.000 монет</li>
+                                <li><i class="fas fa-percentage"></i> Экономия 5⭐</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Старт набор" data-price="20">
+                                <i class="fas fa-shopping-bag"></i> Купить набор за 20⭐
+                            </button>
+                        </div>
+
+                        <!-- Про набор -->
+                        <div class="product-card kit-card popular">
+                            <div class="product-badge">ПОПУЛЯРНО</div>
+                            <h3><i class="fas fa-bullseye"></i> НАБОР ПРОФИ</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 50 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-crown"></i> Квантум (1 месяц)</li>
+                                <li><i class="fas fa-gem"></i> 1.000 Вольв</li>
+                                <li><i class="fas fa-medal"></i> Кастом титул</li>
+                                <li><i class="fas fa-coins"></i> 1.000.000 монет</li>
+                                <li><i class="fas fa-key"></i> 2 отмычки</li>
+                                <li><i class="fas fa-percentage"></i> Экономия 15⭐</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Про набор" data-price="50">
+                                <i class="fas fa-shopping-bag"></i> Купить набор за 50⭐
+                            </button>
+                        </div>
+
+                        <!-- Легенда набор -->
+                        <div class="product-card kit-card vip">
+                            <div class="product-badge">ЛУЧШИЙ</div>
+                            <h3><i class="fas fa-crown"></i> ЛЕГЕНДАРНЫЙ НАБОР</h3>
+                            <div class="product-price">
+                                <i class="fas fa-star"></i> 100 звезд
+                            </div>
+                            <ul class="product-features">
+                                <li><i class="fas fa-crown"></i> Фамоус (1 месяц)</li>
+                                <li><i class="fas fa-gem"></i> 2.500 Вольв</li>
+                                <li><i class="fas fa-medal"></i> Кастом титул</li>
+                                <li><i class="fas fa-coins"></i> 2.500.000 монет</li>
+                                <li><i class="fas fa-key"></i> Комплект отмычек</li>
+                                <li><i class="fas fa-percentage"></i> Экономия 30⭐</li>
+                            </ul>
+                            <button class="btn-buy" data-product="Легенда набор" data-price="100">
+                                <i class="fas fa-shopping-bag"></i> Купить набор за 100⭐
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3><i class="fas fa-crown"></i> VolvetMC</h3>
+                    <p>Сервер Minecraft:BE</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#"><i class="fas fa-book"></i> Правила</a>
+                    <a href="#"><i class="fas fa-headset"></i> Поддержка</a>
+                    <a href="#"><i class="fab fa-telegram"></i> Telegram</a>
+                </div>
+                <div class="footer-info">
+                    <p class="warning">Telegram бот : @VolvetDon_bot</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Корзина -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-overlay"></div>
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <div class="cart-header-main">
+                    <div class="cart-icon-header">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="cart-badge" id="cartBadge">0</div>
+                    </div>
+                    <div class="cart-title">
+                        <h3>Моя корзина</h3>
+                        <p>Товары, которые вы выбрали</p>
+                    </div>
+                </div>
+                <button class="cart-close-btn" id="closeCartBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-server-info">
+                <div class="server-info-card">
+                    <i class="fas fa-server"></i>
+                    <div class="server-info-content">
+                        <span class="server-label">Выбранный сервер:</span>
+                        <span class="server-name" id="cartServerName">Не выбран</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-items-section">
+                <div class="section-header">
+                    <h4><i class="fas fa-boxes"></i> Товары в корзине</h4>
+                    <span class="items-count" id="itemsCount">0 товаров</span>
+                </div>
+                
+                <div class="cart-items-container">
+                    <div class="cart-items" id="cartItems">
+                        <!-- Пустая корзина -->
+                        <div class="empty-cart">
+                            <div class="empty-cart-icon">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            <h4>Корзина пуста</h4>
+                            <p>Добавьте товары из магазина</p>
+                            <button class="btn-browse" id="goToShopBtn">
+                                <i class="fas fa-store"></i> Перейти в магазин
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h4><i class="fas fa-receipt"></i> Итог</h4>
+                    </div>
+                    
+                    <div class="summary-items">
+                        <div class="summary-row">
+                            <span class="row-label">Товаров:</span>
+                            <span class="row-value" id="summaryItems">0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="row-label">Стоимость:</span>
+                            <span class="row-value">
+                                <span id="totalPrice">0</span> <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                        
+                        <div class="summary-discount">
+                            <i class="fas fa-gift"></i>
+                            <span>При заказе от 50⭐ получите скидку 5%!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-total">
+                        <div class="total-label">К оплате:</div>
+                        <div class="total-amount">
+                            <span id="finalPrice">0</span>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <button class="btn-clear-cart" id="clearCartBtn">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Очистить корзину</span>
+                </button>
+                <button class="btn-checkout" id="checkoutBtn">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Оформить заказ</span>
+                    <span class="checkout-price" id="checkoutPrice">0⭐</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Оформление заказа -->
+    <div class="checkout-modal" id="purchaseModal">
+        <div class="checkout-modal-overlay"></div>
+        <div class="checkout-modal-content">
+            <div class="checkout-header">
+                <div class="checkout-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="checkout-title">
+                    <h3>Оформление заказа</h3>
+                    <p>Завершите покупку</p>
+                </div>
+                <button class="checkout-close" id="closePurchaseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="checkout-details">
+                <div class="detail-card">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Сервер:</span>
+                            <span class="detail-value" id="purchaseServer">Не выбран</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Товары:</span>
+                            <span class="detail-value" id="purchaseProduct">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item total-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Итого к оплате:</span>
+                            <span class="detail-value total">
+                                <span id="purchasePrice">0</span> <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-instruction">
+                <div class="instruction-card">
+                    <div class="instruction-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h4>Как оплатить заказ:</h4>
+                    </div>
+                    
+                    <div class="instruction-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Отправьте тг подарок:</strong>
+                                <p>@Tumfiks</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>На сумму</strong>
+                                <p><span id="instructionPrice">0</span> звезд</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>Укажите свой ник </strong>
+                                <p>И выбранный режим</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <strong>Получите товар</strong>
+                                <p>В течение 48 часов после оплаты</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-note">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Если меньше 15 звезд отправьте их под пост @VolvetMCPE и укажите ник и режим в коментариях</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-actions">
+                <button class="btn-cancel" id="cancelPurchaseBtn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Вернуться</span>
+                </button>
+                <button class="btn-confirm" id="confirmPurchaseBtn">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Я оплатил</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationText"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
