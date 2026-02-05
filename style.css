@@ -121,6 +121,7 @@ body {
     color: var(--accent-2);
     cursor: pointer;
     transition: var(--transition);
+    padding: 8px;
 }
 
 .cart-icon:hover {
@@ -130,8 +131,8 @@ body {
 
 .cart-count {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 0;
+    right: 0;
     background: #ef4444;
     color: white;
     font-size: 12px;
@@ -552,7 +553,7 @@ body {
     border: 1px solid rgba(251, 191, 36, 0.2);
 }
 
-/* === КРАСИВАЯ КОРЗИНА === */
+/* === КОРЗИНА === */
 .cart-modal {
     display: none;
     position: fixed;
@@ -561,61 +562,41 @@ body {
     right: 0;
     bottom: 0;
     z-index: 9999;
+    background: rgba(15, 11, 26, 0.98);
 }
 
 .cart-modal.show {
-    display: block;
-}
-
-.cart-modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 11, 26, 0.95);
-    backdrop-filter: blur(10px);
-    animation: fadeIn 0.3s ease;
-}
-
-.cart-modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--secondary-bg);
-    width: 95%;
-    max-width: 480px;
-    max-height: 90vh;
-    border-radius: 20px;
-    border: 1px solid rgba(124, 58, 237, 0.3);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
-/* Заголовок корзины */
+.cart-modal-content {
+    background: var(--secondary-bg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Шапка корзины */
 .cart-header {
     background: var(--gradient-purple);
-    padding: 25px 30px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .cart-title h3 {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 22px;
     color: white;
-    margin: 0 0 5px 0;
+    margin-bottom: 5px;
 }
 
 .cart-title p {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
-    margin: 0;
 }
 
 .cart-close-btn {
@@ -632,87 +613,13 @@ body {
     justify-content: center;
 }
 
-/* Информация о сервере */
-.cart-server-info {
-    padding: 20px 30px;
-    background: rgba(124, 58, 237, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.server-info-card {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(124, 58, 237, 0.2);
-}
-
-.server-info-card i {
-    font-size: 20px;
-    color: var(--accent-2);
-    width: 40px;
-    height: 40px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.server-info-content {
-    flex: 1;
-}
-
-.server-label {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 4px;
-}
-
-.server-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
 /* Список товаров */
-.cart-items-section {
-    padding: 25px 30px;
+.cart-items-container {
     flex: 1;
     overflow-y: auto;
+    padding: 20px;
 }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.section-header h4 {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-header h4 i {
-    color: var(--accent-2);
-}
-
-.items-count {
-    font-size: 14px;
-    color: var(--text-secondary);
-    background: rgba(124, 58, 237, 0.1);
-    padding: 5px 12px;
-    border-radius: 20px;
-}
-
-/* Элементы корзины */
 .cart-items {
     display: flex;
     flex-direction: column;
@@ -722,7 +629,7 @@ body {
 .cart-item {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    padding: 18px;
+    padding: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: space-between;
@@ -745,7 +652,6 @@ body {
 
 .cart-item-name i {
     color: var(--accent-2);
-    font-size: 14px;
 }
 
 .cart-item-server {
@@ -760,7 +666,7 @@ body {
 .cart-item-price {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .cart-item-amount {
@@ -785,91 +691,27 @@ body {
     justify-content: center;
 }
 
-/* Пустая корзина */
-.empty-cart {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.empty-cart-icon {
-    width: 80px;
-    height: 80px;
-    background: rgba(124, 58, 237, 0.1);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 36px;
-    color: var(--accent-2);
-}
-
-.empty-cart h4 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 10px;
-}
-
-.empty-cart p {
-    color: var(--text-secondary);
-    margin-bottom: 20px;
-}
-
-.btn-browse {
-    background: var(--gradient-purple);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto;
-}
-
 /* Итоговая сумма */
-.cart-summary {
-    padding: 0 30px 25px;
+.cart-summary-section {
+    background: rgba(26, 21, 37, 0.95);
+    border-top: 2px solid var(--accent-2);
+    padding: 20px;
+    flex-shrink: 0;
 }
 
-.summary-card {
+.cart-summary {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     padding: 20px;
     border: 1px solid rgba(124, 58, 237, 0.2);
-}
-
-.summary-header {
-    margin-bottom: 20px;
-}
-
-.summary-header h4 {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.summary-header h4 i {
-    color: var(--accent-2);
-}
-
-.summary-items {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -879,7 +721,7 @@ body {
 
 .row-label {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .row-value {
@@ -894,24 +736,6 @@ body {
     color: #fbbf24;
 }
 
-/* ВОЗВРАЩАЕМ СТАРУЮ НАДПИСЬ СО СКИДКОЙ */
-.summary-discount {
-    background: rgba(59, 130, 246, 0.1);
-    border-radius: 10px;
-    padding: 12px;
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: #3b82f6;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.summary-discount i {
-    font-size: 14px;
-}
-
 .summary-total {
     display: flex;
     justify-content: space-between;
@@ -919,12 +743,12 @@ body {
     padding: 15px;
     background: rgba(124, 58, 237, 0.1);
     border-radius: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
     border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
 .total-label {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -944,7 +768,6 @@ body {
 
 /* Кнопки действий */
 .cart-actions {
-    padding: 0 30px 30px;
     display: flex;
     gap: 15px;
 }
@@ -954,9 +777,9 @@ body {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.2);
     color: #ef4444;
-    padding: 15px;
+    padding: 16px;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -970,7 +793,7 @@ body {
     background: var(--gradient-purple);
     border: none;
     color: white;
-    padding: 15px;
+    padding: 16px;
     border-radius: 12px;
     font-size: 16px;
     font-weight: 700;
@@ -983,7 +806,7 @@ body {
 
 .checkout-price {
     background: rgba(255, 255, 255, 0.2);
-    padding: 5px 12px;
+    padding: 6px 12px;
     border-radius: 20px;
     font-weight: 700;
     font-size: 15px;
@@ -998,76 +821,40 @@ body {
     right: 0;
     bottom: 0;
     z-index: 10000;
+    background: rgba(15, 11, 26, 0.98);
 }
 
 .checkout-modal.show {
-    display: block;
-}
-
-.checkout-modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 11, 26, 0.98);
-    backdrop-filter: blur(15px);
-    animation: fadeIn 0.3s ease;
-}
-
-.checkout-modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--secondary-bg);
-    width: 95%;
-    max-width: 500px;
-    max-height: 90vh;
-    border-radius: 20px;
-    border: 1px solid rgba(124, 58, 237, 0.3);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
+.checkout-modal-content {
+    background: var(--secondary-bg);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 .checkout-header {
     background: var(--gradient-purple);
-    padding: 30px;
+    padding: 20px;
     display: flex;
     align-items: center;
-    gap: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.checkout-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    color: white;
-}
-
-.checkout-title {
-    flex: 1;
+    justify-content: space-between;
+    flex-shrink: 0;
 }
 
 .checkout-title h3 {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 22px;
     color: white;
-    margin: 0 0 5px 0;
+    margin-bottom: 5px;
 }
 
 .checkout-title p {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
-    margin: 0;
 }
 
 .checkout-close {
@@ -1085,13 +872,14 @@ body {
 }
 
 .checkout-details {
-    padding: 30px;
+    padding: 20px;
+    flex-shrink: 0;
 }
 
 .detail-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
-    padding: 25px;
+    padding: 20px;
     border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
@@ -1144,41 +932,41 @@ body {
 }
 
 .checkout-instruction {
-    padding: 0 30px 30px;
     flex: 1;
     overflow-y: auto;
+    padding: 0 20px;
 }
 
 .instruction-card {
     background: rgba(59, 130, 246, 0.1);
     border-radius: 15px;
-    padding: 25px;
+    padding: 20px;
     border: 1px solid rgba(59, 130, 246, 0.2);
+    margin-bottom: 20px;
 }
 
 .instruction-header {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .instruction-header i {
-    font-size: 20px;
     color: #3b82f6;
+    font-size: 20px;
 }
 
 .instruction-header h4 {
     font-size: 18px;
     font-weight: 600;
     color: #3b82f6;
-    margin: 0;
 }
 
 .instruction-steps {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .step {
@@ -1215,30 +1003,15 @@ body {
 .step-content p {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.8);
-    margin: 0;
-}
-
-.instruction-note {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(251, 191, 36, 0.1);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #fbbf24;
-    font-size: 13px;
-    border: 1px solid rgba(251, 191, 36, 0.2);
-}
-
-.instruction-note i {
-    font-size: 14px;
 }
 
 .checkout-actions {
-    padding: 0 30px 30px;
+    background: rgba(26, 21, 37, 0.95);
+    border-top: 2px solid var(--accent-2);
+    padding: 20px;
     display: flex;
     gap: 15px;
+    flex-shrink: 0;
 }
 
 .btn-cancel {
@@ -1246,9 +1019,9 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-secondary);
-    padding: 15px;
+    padding: 16px;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -1262,7 +1035,7 @@ body {
     background: var(--gradient-green);
     border: none;
     color: white;
-    padding: 15px;
+    padding: 16px;
     border-radius: 12px;
     font-size: 16px;
     font-weight: 700;
@@ -1277,17 +1050,6 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
 }
 
 /* ==================== МОБИЛЬНАЯ АДАПТАЦИЯ ==================== */
@@ -1332,7 +1094,17 @@ body {
     }
 
     .cart-icon {
-        font-size: 20px;
+        font-size: 22px;
+        padding: 6px;
+    }
+
+    .cart-count {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        top: -2px;
+        right: -2px;
+        border: 2px solid var(--secondary-bg);
     }
 
     /* Главный экран на мобильных */
@@ -1408,41 +1180,49 @@ body {
         font-size: 18px;
     }
 
-    /* Корзина на мобильных - ИСПРАВЛЕНО */
+    /* Корзина на мобильных */
+    .cart-modal {
+        display: none;
+    }
+    
+    .cart-modal.show {
+        display: flex;
+    }
+
     .cart-modal-content {
-        width: 95%;
-        max-width: none;
-        max-height: 95vh;
-        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
     }
 
     .cart-header {
-        padding: 20px;
+        padding: 15px;
+        background: var(--gradient-purple);
     }
 
     .cart-title h3 {
         font-size: 20px;
+        color: white;
     }
 
     .cart-title p {
         font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
     }
 
-    .cart-server-info {
-        padding: 15px 20px;
-    }
-
-    .cart-items-section {
-        padding: 20px;
+    .cart-items-container {
+        padding: 15px;
         flex: 1;
         overflow-y: auto;
+        background: var(--primary-bg);
     }
 
     .cart-item {
-        padding: 15px;
+        padding: 12px;
         flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
     }
 
     .cart-item-price {
@@ -1452,82 +1232,158 @@ body {
 
     .cart-item-amount {
         font-size: 16px;
+        color: #fbbf24;
+        font-weight: 700;
+    }
+
+    /* Итоговая сумма - ВСЕГДА ВИДНА */
+    .cart-summary-section {
+        padding: 15px;
+        background: var(--secondary-bg);
+        border-top: 3px solid var(--accent-2);
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
     }
 
     .cart-summary {
-        padding: 0 20px 20px;
+        padding: 15px;
+        margin-bottom: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(124, 58, 237, 0.3);
     }
 
-    .summary-card {
-        padding: 15px;
+    .summary-row {
+        padding: 8px 0;
+    }
+
+    .row-label {
+        font-size: 14px;
+        color: var(--text-secondary);
     }
 
     .summary-total {
         padding: 12px;
+        background: rgba(124, 58, 237, 0.15);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        margin-top: 10px;
+    }
+
+    .total-label {
+        font-size: 16px;
+        font-weight: 700;
     }
 
     .total-amount {
-        font-size: 20px;
+        font-size: 22px;
+        color: #fbbf24;
+        font-weight: 800;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     /* Кнопки действий - ВСЕГДА ВИДНЫ И ЯРКИЕ */
     .cart-actions {
-        padding: 0 20px 20px;
         flex-direction: column;
         gap: 10px;
     }
 
-    .btn-clear-cart, .btn-checkout {
+    .btn-clear-cart {
         width: 100%;
-        padding: 17px;
-        font-size: 16px;
-        font-weight: 700;
+        padding: 14px;
+        font-size: 15px;
+        background: rgba(239, 68, 68, 0.15);
+        border: 2px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+        font-weight: 600;
     }
 
     .btn-checkout {
-        background: var(--gradient-purple);
+        width: 100%;
+        padding: 17px;
+        font-size: 18px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        border: none;
+        color: white;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-checkout:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
+    }
+
+    .btn-checkout::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s ease;
+    }
+    
+    .btn-checkout:hover::after {
+        left: 100%;
     }
 
     .checkout-price {
-        background: rgba(255, 255, 255, 0.3);
-        padding: 6px 12px;
+        font-size: 17px;
+        font-weight: 800;
+        padding: 8px 15px;
+        background: rgba(255, 255, 255, 0.25);
         border-radius: 20px;
-        font-size: 16px;
-        font-weight: 700;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        animation: pulse 2s infinite;
     }
 
-    /* Окно оформления заказа на мобильных */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+    }
+
+    /* Окно оформления на мобильных */
     .checkout-modal-content {
-        width: 95%;
-        max-width: none;
-        max-height: 95vh;
-        border-radius: 15px;
+        height: 100vh;
     }
 
     .checkout-header {
-        padding: 20px;
-    }
-
-    .checkout-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
+        padding: 15px;
+        background: var(--gradient-purple);
     }
 
     .checkout-title h3 {
-        font-size: 22px;
+        font-size: 20px;
+        color: white;
     }
 
     .checkout-details {
-        padding: 20px;
+        padding: 15px;
+        background: var(--primary-bg);
     }
 
     .detail-card {
-        padding: 20px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.03);
     }
 
     .detail-item {
@@ -1535,36 +1391,74 @@ body {
     }
 
     .checkout-instruction {
-        padding: 0 20px 20px;
+        padding: 0 15px 15px;
+        background: var(--primary-bg);
         flex: 1;
         overflow-y: auto;
     }
 
     .instruction-card {
-        padding: 20px;
+        padding: 15px;
+        background: rgba(59, 130, 246, 0.1);
     }
 
-    .instruction-steps {
-        gap: 15px;
-    }
-
-    /* Кнопки оплаты - ЯРКИЕ И ВИДНЫЕ */
     .checkout-actions {
-        padding: 0 20px 20px;
+        padding: 15px;
         flex-direction: column;
         gap: 10px;
+        background: var(--secondary-bg);
+        border-top: 3px solid var(--accent-2);
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
     }
 
-    .btn-cancel, .btn-confirm {
+    .btn-cancel {
         width: 100%;
-        padding: 17px;
-        font-size: 16px;
-        font-weight: 700;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        font-weight: 600;
     }
 
     .btn-confirm {
-        background: var(--gradient-green);
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        width: 100%;
+        padding: 17px;
+        font-size: 18px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #10b981 0%, #22c55e 100%);
+        border: none;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+    }
+
+    .btn-confirm::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.7s ease;
+    }
+    
+    .btn-confirm:hover::after {
+        left: 100%;
     }
 
     /* Футер на мобильных */
@@ -1598,6 +1492,8 @@ body {
     .warning {
         font-size: 13px;
         padding: 8px 12px;
+        background: rgba(251, 191, 36, 0.15);
+        border: 1px solid rgba(251, 191, 36, 0.3);
     }
 }
 
@@ -1632,19 +1528,19 @@ body {
         font-size: 15px;
     }
 
-    .step-content strong,
-    .step-content p {
-        font-size: 13px;
+    .total-amount {
+        font-size: 20px;
     }
 
-    .instruction-note {
-        font-size: 12px;
-    }
-
-    /* Увеличиваем кнопки оплаты на маленьких экранах */
+    /* Делаем кнопки оплаты еще ярче на маленьких экранах */
     .btn-checkout, .btn-confirm {
-        padding: 18px;
         font-size: 17px;
+        padding: 18px;
+    }
+    
+    .checkout-price {
+        font-size: 16px;
+        padding: 8px 14px;
     }
 }
 
@@ -1662,86 +1558,40 @@ body {
         padding: 12px;
     }
 
-    .cart-header {
-        padding: 15px;
+    .cart-header, .checkout-header {
+        padding: 12px;
     }
 
-    .cart-items-section {
-        padding: 15px;
+    .cart-items-container, .checkout-details {
+        padding: 12px;
     }
 
-    .checkout-header {
-        padding: 15px;
+    .cart-summary-section, .checkout-actions {
+        padding: 12px;
     }
 
-    .checkout-details {
-        padding: 15px;
+    .cart-summary {
+        padding: 12px;
     }
 
-    .checkout-instruction {
-        padding: 0 15px 15px;
-    }
-
-    /* Делаем кнопки оплаты максимально заметными */
-    .btn-checkout, .btn-confirm {
-        padding: 19px;
+    .total-amount {
         font-size: 18px;
-        font-weight: 800;
     }
-    
-    .checkout-price {
-        font-size: 17px;
-        padding: 8px 14px;
-        background: rgba(255, 255, 255, 0.4);
+
+    /* Максимально выделяем кнопки оплаты на самых маленьких экранах */
+    .btn-checkout, .btn-confirm {
+        padding: 17px;
+        font-size: 16px;
     }
 }
 
-/* Улучшаем видимость кнопок на телефонах */
-@media (max-width: 768px) {
-    .btn-checkout, .btn-confirm {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .btn-checkout::after, .btn-confirm::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.7s ease;
-    }
-    
-    .btn-checkout:hover::after, .btn-confirm:hover::after {
-        left: 100%;
-    }
-    
-    /* Делаем иконки и текст белыми для лучшей видимости */
-    .btn-checkout i, .btn-confirm i,
-    .btn-checkout span, .btn-confirm span {
-        color: white;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Выделяем цену в кнопке */
-    .checkout-price {
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
-        }
-        50% {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0);
-        }
-        100% {
-            transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-        }
-    }
+/* Дополнительные улучшения для видимости */
+.btn-checkout i, .btn-confirm i {
+    font-size: 18px;
+    color: white;
+}
+
+.btn-checkout span, .btn-confirm span {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
