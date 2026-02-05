@@ -894,6 +894,24 @@ body {
     color: #fbbf24;
 }
 
+/* ВОЗВРАЩАЕМ СТАРУЮ НАДПИСЬ СО СКИДКОЙ */
+.summary-discount {
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.summary-discount i {
+    font-size: 14px;
+}
+
 .summary-total {
     display: flex;
     justify-content: space-between;
@@ -1261,17 +1279,6 @@ body {
     to { opacity: 1; }
 }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
 /* ==================== МОБИЛЬНАЯ АДАПТАЦИЯ ==================== */
 @media (max-width: 768px) {
     .container {
@@ -1390,17 +1397,12 @@ body {
         font-size: 18px;
     }
 
-    /* Корзина на мобильных - ИСПРАВЛЕНО */
+    /* Корзина на мобильных */
     .cart-modal-content {
         width: 95%;
         max-width: none;
         max-height: 95vh;
         border-radius: 15px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        flex-direction: column;
     }
 
     .cart-header {
@@ -1454,25 +1456,30 @@ body {
     }
 
     .total-amount {
-        font-size: 20px;
+        font-size: 22px;
     }
 
-    /* Кнопки действий - ВСЕГДА ВИДНЫ */
+    /* Кнопки действий - УЛУЧШАЕМ ВИДИМОСТЬ */
     .cart-actions {
         padding: 0 20px 20px;
         flex-direction: column;
         gap: 10px;
     }
 
-    .btn-clear-cart, .btn-checkout {
+    .btn-clear-cart {
         width: 100%;
         padding: 16px;
         font-size: 15px;
+        font-weight: 600;
     }
 
     .btn-checkout {
+        width: 100%;
+        padding: 18px;
+        font-size: 18px;
+        font-weight: 800;
         background: var(--gradient-purple);
-        font-weight: 700;
+        box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -1480,10 +1487,10 @@ body {
 
     .checkout-price {
         background: rgba(255, 255, 255, 0.3);
-        padding: 6px 12px;
+        padding: 8px 15px;
         border-radius: 20px;
-        font-size: 15px;
-        font-weight: 700;
+        font-size: 17px;
+        font-weight: 800;
     }
 
     /* Окно оформления заказа на мобильных */
@@ -1534,22 +1541,27 @@ body {
         gap: 15px;
     }
 
-    /* Кнопки оплаты - ЯРКИЕ И ВИДНЫЕ */
+    /* Кнопки оплаты - ДЕЛАЕМ ЯРКИМИ И ВИДИМЫМИ */
     .checkout-actions {
         padding: 0 20px 20px;
         flex-direction: column;
         gap: 10px;
     }
 
-    .btn-cancel, .btn-confirm {
+    .btn-cancel {
         width: 100%;
         padding: 16px;
         font-size: 15px;
+        font-weight: 600;
     }
 
     .btn-confirm {
+        width: 100%;
+        padding: 18px;
+        font-size: 18px;
+        font-weight: 800;
         background: var(--gradient-green);
-        font-weight: 700;
+        box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
     }
 
     /* Футер на мобильных */
@@ -1626,10 +1638,15 @@ body {
         font-size: 12px;
     }
 
-    /* Увеличиваем кнопки оплаты на маленьких экранах */
+    /* Делаем кнопки оплаты еще ярче на маленьких экранах */
     .btn-checkout, .btn-confirm {
-        padding: 18px;
-        font-size: 16px;
+        padding: 20px;
+        font-size: 19px;
+    }
+    
+    .checkout-price {
+        font-size: 18px;
+        padding: 9px 16px;
     }
 }
 
@@ -1647,19 +1664,11 @@ body {
         padding: 12px;
     }
 
-    .cart-header {
+    .cart-header, .checkout-header {
         padding: 15px;
     }
 
-    .cart-items-section {
-        padding: 15px;
-    }
-
-    .checkout-header {
-        padding: 15px;
-    }
-
-    .checkout-details {
+    .cart-items-section, .checkout-details {
         padding: 15px;
     }
 
@@ -1667,12 +1676,12 @@ body {
         padding: 0 15px 15px;
     }
 
-    /* Делаем кнопки оплаты максимально заметными */
+    /* Максимально выделяем кнопки оплаты */
     .btn-checkout, .btn-confirm {
-        padding: 20px;
-        font-size: 17px;
-        font-weight: 800;
+        padding: 22px;
+        font-size: 20px;
         position: relative;
+        overflow: hidden;
     }
     
     .btn-checkout::after, .btn-confirm::after {
@@ -1691,38 +1700,35 @@ body {
     }
     
     .checkout-price {
-        font-size: 16px;
-        padding: 8px 14px;
+        font-size: 19px;
+        padding: 10px 18px;
         background: rgba(255, 255, 255, 0.4);
-    }
-}
-
-/* Исправления для JS-скрипта */
-.btn-checkout:active, .btn-confirm:active {
-    transform: scale(0.98);
-}
-
-/* Улучшаем видимость суммы в корзине */
-.total-amount {
-    color: #fbbf24;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Делаем иконку корзины более заметной на мобильных */
-@media (max-width: 768px) {
-    .cart-icon {
-        font-size: 22px;
-        padding: 8px;
-        background: rgba(124, 58, 237, 0.1);
-        border-radius: 8px;
+        animation: pulse 2s infinite;
     }
     
-    .cart-count {
-        top: -5px;
-        right: -5px;
-        width: 22px;
-        height: 22px;
-        font-size: 13px;
-        border: 2px solid var(--secondary-bg);
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+    }
+}
+
+/* Улучшаем отображение на телефонах */
+@media (max-width: 768px) {
+    /* Делаем иконки и текст белыми для лучшей видимости */
+    .btn-checkout i, .btn-confirm i,
+    .btn-checkout span, .btn-confirm span,
+    .checkout-price {
+        color: white;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 }
