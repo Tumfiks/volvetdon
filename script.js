@@ -2,31 +2,54 @@
 let cart = [];
 let selectedServer = null;
 let serverOnline = {
-    lite: { online: 0, max: 25 },
-    crit: { online: 0, max: 20 }
+    lite: { online: 0, max: 500 },
+    crit: { online: 0, max: 300 }
 };
 
-// === НАСТОЯЩИЙ ОНЛАЙН СЕРВЕРА ===
-const SERVER_CONFIG = {
-    lite: {
-        name: "Lite режим",
-        ip: "VolvetMC.aternos.me",
-        port: 29953,
-        apiUrls: [
-            "https://api.mcsrvstat.us/2/{ip}:{port}",
-            "https://api.mcstatus.io/v2/status/java/{ip}:{port}"
-        ]
-    },
-    crit: {
-        name: "Crit режим",
-        ip: "phoenix-pe.ru",
-        port: 19132,
-        apiUrls: [
-            "https://api.mcsrvstat.us/2/{ip}:{port}",
-            "https://api.mcstatus.io/v2/status/java/{ip}:{port}"
-        ]
+// === НАСТОЯЩИЙ ОНЛАЙН ЧЕРЕЗ PHP ===
+
+// Функция для получения онлайна через PHP
+async function getServerOnline(server) {
+    try {
+        const response = await fetch(`get-online.php?server=${server}&_=${Date.now()}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache'
+            },
+            cache: 'no-cache'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success === false) {
+            console.warn(`Ошибка получения онлайна для ${server}:`, data.error);
+            return { online: 0, max: server === 'lite' ? 500 : 300, status: 'error' };
+        }
+        
+        return {
+            online: data.online || 0,
+            max: data.max || (server === 'lite' ? 500 : 300),
+            status: data.status || 'offline',
+            name: data.name || (server === 'lite' ? 'Lite режим' : 'Crit режим')
+        };
+        
+    } catch (error) {
+        console.error(`Ошибка при запросе онлайна для ${server}:`, error);
+        
+        // Возвращаем заглушку при ошибке
+        return {
+            online: 0,
+            max: server === 'lite' ? 500 : 300,
+            status: 'error',
+            name: server === 'lite' ? 'Lite режим' : 'Crit режим'
+        };
     }
-};
+}
 
 // === ОСНОВНОЙ КОД ===
 document.addEventListener('DOMContentLoaded', function() {
@@ -62,13 +85,6 @@ function setupAdaptiveFeatures() {
     window.addEventListener('resize', setVH);
     window.addEventListener('orientationchange', setVH);
     
-    // Предотвращаем зум на iOS при фокусе
-    document.addEventListener('touchstart', function(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
-            event.target.style.fontSize = '16px';
-        }
-    }, { passive: true });
-    
     // Улучшаем скролл на iOS
     document.querySelectorAll('.cart-items-container, .checkout-instruction').forEach(container => {
         container.addEventListener('touchmove', function(e) {
@@ -88,98 +104,42 @@ async function initOnline() {
     updateOnlineDisplay('crit', serverOnline.crit.online, serverOnline.crit.max);
     updateProgressBars();
     
-    // Пробуем загрузить реальный онлайн
-    await updateServerOnline('lite');
-    await updateServerOnline('crit');
+    // Загружаем реальный онлайн через PHP
+    await updateAllServersOnline();
     
     // Автоматическое обновление каждые 30 секунд
-    setInterval(() => {
+    setInterval(async () => {
         if (document.querySelector('.server-selection.active')) {
-            updateServerOnline('lite');
-            updateServerOnline('crit');
+            await updateAllServersOnline();
         } else if (selectedServer) {
-            updateServerOnline(selectedServer);
+            await updateServerOnlineDisplay(selectedServer);
         }
     }, 30000);
 }
 
-async function updateServerOnline(serverType) {
-    const config = SERVER_CONFIG[serverType];
-    const onlineElement = serverType === 'lite' ? document.getElementById('liteOnline') : document.getElementById('critOnline');
-    
-    if (!onlineElement) return;
-    
-    // Если IP не настроены, используем статический онлайн
-    if (config.ip.includes("ВАШ_IP") || config.ip === "VolvetMC.aternos.me" || config.ip === "phoenix-pe.ru") {
-        console.log(`⚠️ IP для ${serverType} не настроен, используем статический онлайн`);
-        const staticOnline = serverType === 'lite' ? 
-            { online: 247, max: 500 } : 
-            { online: 128, max: 300 };
-        
-        serverOnline[serverType] = staticOnline;
-        updateOnlineDisplay(serverType, staticOnline.online, staticOnline.max);
-        updateProgressBars();
-        return;
-    }
-    
+async function updateAllServersOnline() {
     try {
-        let onlineData = null;
-        
-        // Пробуем mcstatus.io
-        try {
-            const response = await fetch(`https://api.mcstatus.io/v2/status/java/${config.ip}:${config.port}`, {
-                timeout: 5000
-            });
-            if (response && response.ok) {
-                const data = await response.json();
-                if (data.online) {
-                    onlineData = {
-                        online: data.players.online,
-                        max: data.players.max
-                    };
-                }
-            }
-        } catch (e) {
-            console.log(`❌ mcstatus.io не сработал для ${serverType}`);
-        }
-        
-        // Если mcstatus.io не сработал, пробуем mcsrvstat.us
-        if (!onlineData) {
-            try {
-                const response = await fetch(`https://api.mcsrvstat.us/2/${config.ip}:${config.port}`, {
-                    timeout: 5000
-                });
-                if (response && response.ok) {
-                    const data = await response.json();
-                    if (data.online) {
-                        onlineData = {
-                            online: data.players.online,
-                            max: data.players.max
-                        };
-                    }
-                }
-            } catch (e) {
-                console.log(`❌ mcsrvstat.us не сработал для ${serverType}`);
-            }
-        }
-        
-        // Если API не сработали, используем заглушку
-        if (!onlineData) {
-            const baseOnline = serverType === 'lite' ? 200 : 100;
-            const variation = Math.floor(Math.random() * 40) - 20;
-            const online = Math.max(0, Math.min(baseOnline + variation, serverType === 'lite' ? 500 : 300));
-            
-            onlineData = {
-                online: online,
-                max: serverType === 'lite' ? 500 : 300
-            };
-        }
+        await Promise.all([
+            updateServerOnlineDisplay('lite'),
+            updateServerOnlineDisplay('crit')
+        ]);
+    } catch (error) {
+        console.error('Ошибка обновления онлайна всех серверов:', error);
+    }
+}
+
+async function updateServerOnlineDisplay(serverType) {
+    try {
+        const data = await getServerOnline(serverType);
         
         // Обновляем данные
-        serverOnline[serverType] = onlineData;
+        serverOnline[serverType] = {
+            online: data.online,
+            max: data.max
+        };
         
         // Обновляем отображение
-        updateOnlineDisplay(serverType, onlineData.online, onlineData.max);
+        updateOnlineDisplay(serverType, data.online, data.max);
         updateProgressBars();
         
         // Если этот сервер выбран, обновляем шапку
@@ -187,8 +147,17 @@ async function updateServerOnline(serverType) {
             updateCurrentOnlineDisplay();
         }
         
+        return data;
+        
     } catch (error) {
-        console.error(`❌ Ошибка обновления онлайна ${serverType}:`, error);
+        console.error(`Ошибка обновления отображения онлайна для ${serverType}:`, error);
+        
+        // Показываем заглушку
+        const onlineElement = serverType === 'lite' ? document.getElementById('liteOnline') : document.getElementById('critOnline');
+        if (onlineElement) {
+            onlineElement.textContent = "Ошибка";
+            onlineElement.style.color = "#ef4444";
+        }
     }
 }
 
@@ -196,7 +165,16 @@ function updateOnlineDisplay(serverType, online, max) {
     const element = serverType === 'lite' ? document.getElementById('liteOnline') : document.getElementById('critOnline');
     if (element) {
         element.textContent = `${online}/${max}`;
-        element.style.color = "#fff";
+        
+        // Цвет в зависимости от заполненности
+        const percent = (online / max) * 100;
+        if (percent >= 80) {
+            element.style.color = "#ef4444";
+        } else if (percent >= 50) {
+            element.style.color = "#f59e0b";
+        } else {
+            element.style.color = "#10b981";
+        }
     }
 }
 
@@ -381,7 +359,7 @@ function switchCategory(category) {
     console.log(`Переключение на категорию: ${category}`);
     
     // Обновляем активные кнопки
-    document.querySelectorAll('.nav-btn').forEach(btn => {
+    document.querySelectorAll('.nav-btn, .mobile-nav-btn').forEach(btn => {
         btn.classList.remove('active');
         if (btn.getAttribute('data-category') === category) {
             btn.classList.add('active');
@@ -517,8 +495,6 @@ function showCart() {
     if (cartModal) {
         cartModal.classList.add('show');
         document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
     }
     
     // Закрываем мобильное меню если открыто
@@ -530,8 +506,6 @@ function hideCart() {
     if (cartModal) {
         cartModal.classList.remove('show');
         document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
     }
 }
 
@@ -705,8 +679,6 @@ function showCheckout() {
     if (purchaseModal) {
         purchaseModal.classList.add('show');
         document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
     }
 }
 
@@ -715,8 +687,6 @@ function hideCheckout() {
     if (purchaseModal) {
         purchaseModal.classList.remove('show');
         document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
     }
 }
 
@@ -960,45 +930,13 @@ window.debug = {
         updateCart();
         location.reload();
     },
-    testOnline: () => {
-        updateServerOnline('lite');
-        updateServerOnline('crit');
+    testOnline: async () => {
+        await updateAllServersOnline();
         showNotification('Онлайн обновлен', 'info');
+    },
+    testPHP: async (server = 'lite') => {
+        const result = await getServerOnline(server);
+        console.log(`PHP результат для ${server}:`, result);
+        showNotification(`PHP тест: ${result.online}/${result.max}`, 'info');
     }
 };
-
-// Fetch с таймаутом
-fetch.prototype.timeout = function(ms) {
-    return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-            reject(new Error('Request timeout'));
-        }, ms);
-        
-        this.then(resolve, reject).finally(() => clearTimeout(timeout));
-    });
-};
-
-// Полифил для requestAnimationFrame
-if (!window.requestAnimationFrame) {
-    window.requestAnimationFrame = window.webkitRequestAnimationFrame || 
-                                  window.mozRequestAnimationFrame || 
-                                  function(callback) {
-                                      return window.setTimeout(callback, 1000 / 60);
-                                  };
-}
-
-// Полифил для matches
-if (!Element.prototype.matches) {
-    Element.prototype.matches = 
-        Element.prototype.matchesSelector || 
-        Element.prototype.mozMatchesSelector ||
-        Element.prototype.msMatchesSelector || 
-        Element.prototype.oMatchesSelector || 
-        Element.prototype.webkitMatchesSelector ||
-        function(s) {
-            var matches = (this.document || this.ownerDocument).querySelectorAll(s),
-                i = matches.length;
-            while (--i >= 0 && matches.item(i) !== this) {}
-            return i > -1;
-        };
-}
